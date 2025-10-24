@@ -1,23 +1,25 @@
+// FILE: backend/src/Application/CrmApp.Application/Interfaces/ILeadService.cs
 using CrmApp.Application.DTOs;
 using CrmApp.Domain.Common;
 
-namespace CrmApp.Application.Services;
+namespace CrmApp.Application.Interfaces;
 
 public interface ILeadService
 {
-    Task<PaginatedResult<LeadDto>> GetLeadsAsync(int pageNumber = 1, int pageSize = 10, 
-        string? searchTerm = null, string? sortColumn = null, string? sortOrder = "asc", 
+    Task<PaginatedResult<LeadDto>> GetLeadsAsync(int pageNumber = 1, int pageSize = 10,
+        string? searchTerm = null, string? sortColumn = null, string? sortOrder = "asc",
         CancellationToken cancellationToken = default);
-    
-    Task<LeadDto?> GetLeadByIdAsync(Guid id, CancellationToken cancellationToken = default);
-    
+
+    Task<LeadDto?> GetLeadByIdAsync(int Id, CancellationToken cancellationToken = default);
+
     Task<LeadDto> CreateLeadAsync(LeadCreateDto createDto, CancellationToken cancellationToken = default);
-    
-    Task<LeadDto?> UpdateLeadAsync(Guid id, LeadCreateDto updateDto, 
+
+    Task<LeadDto?> UpdateLeadAsync(int Id, LeadCreateDto updateDto,
         CancellationToken cancellationToken = default);
-    
-    Task<bool> DeleteLeadAsync(Guid id, CancellationToken cancellationToken = default);
+
+    Task<bool> DeleteLeadAsync(int Id, CancellationToken cancellationToken = default);
 }
+
 
 public class PaginatedResult<T>
 {

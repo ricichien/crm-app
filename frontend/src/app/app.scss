@@ -1,0 +1,6 @@
+/* src/app/app.scss */
+.app-root { display: flex; min-height: 100vh; }
+.main-area { flex: 1; padding: 16px; background: #f4f6fb; }
+@media (max-width: 800px) {
+  .app-root { flex-direction: column; }
+}

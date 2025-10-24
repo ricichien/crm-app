@@ -1,0 +1,23 @@
+<div class="board-root">
+  <h2>Task Board</h2>
+
+  <div *ngIf="loading">Loading tasks...</div>
+  <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+
+  <div class="board">
+    <div class="column" *ngFor="let status of statuses">
+      <h3 class="col-title">{{ status }}</h3>
+      <div
+        cdkDropList
+        [cdkDropListData]="tasksByStatus[status]"
+        class="drop-list"
+        (cdkDropListDropped)="drop($event, status)"
+      >
+        <div class="task-card" *ngFor="let task of tasksByStatus[status]" cdkDrag>
+          <div class="task-title">{{ task.title }}</div>
+          <div class="task-desc">{{ task.description }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

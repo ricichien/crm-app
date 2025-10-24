@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Application\CrmApp.Application\CrmApp.Application.csproj" />
     <ProjectReference Include="..\..\Infra\CrmApp.Infrastructure\CrmApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Domain\CrmApp.Domain\CrmApp.Domain.csproj" />
   </ItemGroup>
 
 </Project>

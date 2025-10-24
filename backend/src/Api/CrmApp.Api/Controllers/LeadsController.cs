@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using CrmApp.Application.DTOs;
-using CrmApp.Application.Services;
+using CrmApp.Application.Interfaces;
 using CrmApp.Domain.Enums;
 
 namespace CrmApp.Api.Controllers;
@@ -28,10 +28,9 @@ public class LeadsController : ControllerBase
         [FromQuery] string? sortOrder = "asc",
         CancellationToken cancellationToken = default)
     {
-        var result = await _leadService.GetLeadsAsync(
-            page, pageSize, search, sortBy, sortOrder, cancellationToken);
-        
-        Response.Headers.Add("X-Pagination", 
+        var result = await _leadService.GetLeadsAsync(page, pageSize, search, sortBy, sortOrder, cancellationToken);
+
+        Response.Headers["X-Pagination"] =
             System.Text.Json.JsonSerializer.Serialize(new
             {
                 result.TotalCount,
@@ -39,15 +38,15 @@ public class LeadsController : ControllerBase
                 result.TotalPages,
                 result.HasPreviousPage,
                 result.HasNextPage
-            }));
+            });
 
         return Ok(result.Items);
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<LeadDto>> GetLead(Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<LeadDto>> GetLead(int id, CancellationToken cancellationToken)
     {
         var lead = await _leadService.GetLeadByIdAsync(id, cancellationToken);
         if (lead == null)
@@ -73,12 +72,12 @@ public class LeadsController : ControllerBase
         return CreatedAtAction(nameof(GetLead), new { id = lead.Id }, lead);
     }
 
-    [HttpPut("{id:guid}")]
+    [HttpPut("{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<LeadDto>> UpdateLead(
-        Guid id,
+        int id,
         [FromBody] LeadCreateDto updateDto,
         CancellationToken cancellationToken)
     {
@@ -96,10 +95,10 @@ public class LeadsController : ControllerBase
         return Ok(lead);
     }
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteLead(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteLead(int id, CancellationToken cancellationToken)
     {
         var result = await _leadService.DeleteLeadAsync(id, cancellationToken);
         if (!result)

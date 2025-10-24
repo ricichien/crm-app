@@ -1,4 +1,4 @@
-﻿namespace CrmApp.Application;
+namespace CrmApp.Application;
 
 public class Class1
 {

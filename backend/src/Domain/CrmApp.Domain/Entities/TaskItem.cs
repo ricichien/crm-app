@@ -12,6 +12,7 @@ public class TaskItem : AuditableEntity
     public TaskStatus Status { get; set; } = TaskStatus.Pending;
     public Guid? LeadId { get; set; }
     public virtual Lead? Lead { get; set; }
+    public int Order { get; set; } = 0;
 }
 
 public enum TaskStatus

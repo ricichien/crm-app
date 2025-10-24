@@ -1,0 +1,13 @@
+<nav class="sidebar">
+  <div class="brand">CRM App</div>
+
+  <ul class="menu">
+    <li *ngFor="let item of menu">
+      <a [routerLink]="item.path" routerLinkActive="active">{{ item.label }}</a>
+    </li>
+  </ul>
+
+  <div class="bottom-note">
+    <small>v1.0 · MVP</small>
+  </div>
+</nav>
