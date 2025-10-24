@@ -45,7 +45,7 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using CrmApp.Infrastructure.Persistence;
-using CrmApp.Api.Middleware;
+// using CrmApp.Api.Middleware;
 using CrmApp.Application;
 using CrmApp.Infrastructure;
 using Serilog;
@@ -74,8 +74,8 @@ builder.Services.AddControllers()
 // If not present, those methods will cause compile error — remove/comment if you don't have them.
 try
 {
-    builder.Services.AddApplication();
-    builder.Services.AddInfrastructure(builder.Configuration);
+    // builder.Services.AddApplication();
+    // builder.Services.AddInfrastructure(builder.Configuration);
 }
 catch
 {
@@ -155,7 +155,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CRM API v1"));
 }
 
-app.UseMiddleware<ExceptionMiddleware>();
+// app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseRouting();
