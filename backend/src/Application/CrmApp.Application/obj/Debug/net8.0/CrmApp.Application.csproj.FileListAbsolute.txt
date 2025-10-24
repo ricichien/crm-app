@@ -1,0 +1,15 @@
+C:\Users\Usuario\documents\Github\crm-app\backend\src\Application\CrmApp.Application\bin\Debug\net8.0\CrmApp.Application.deps.json
+C:\Users\Usuario\documents\Github\crm-app\backend\src\Application\CrmApp.Application\bin\Debug\net8.0\CrmApp.Application.dll
+C:\Users\Usuario\documents\Github\crm-app\backend\src\Application\CrmApp.Application\bin\Debug\net8.0\CrmApp.Application.pdb
+C:\Users\Usuario\documents\Github\crm-app\backend\src\Application\CrmApp.Application\bin\Debug\net8.0\CrmApp.Domain.dll
+C:\Users\Usuario\documents\Github\crm-app\backend\src\Application\CrmApp.Application\bin\Debug\net8.0\CrmApp.Domain.pdb
+C:\Users\Usuario\documents\Github\crm-app\backend\src\Application\CrmApp.Application\obj\Debug\net8.0\CrmApp.Application.csproj.AssemblyReference.cache
+C:\Users\Usuario\documents\Github\crm-app\backend\src\Application\CrmApp.Application\obj\Debug\net8.0\CrmApp.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Usuario\documents\Github\crm-app\backend\src\Application\CrmApp.Application\obj\Debug\net8.0\CrmApp.Application.AssemblyInfoInputs.cache
+C:\Users\Usuario\documents\Github\crm-app\backend\src\Application\CrmApp.Application\obj\Debug\net8.0\CrmApp.Application.AssemblyInfo.cs
+C:\Users\Usuario\documents\Github\crm-app\backend\src\Application\CrmApp.Application\obj\Debug\net8.0\CrmApp.Application.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\documents\Github\crm-app\backend\src\Application\CrmApp.Application\obj\Debug\net8.0\CrmApp.Application.csproj.CopyComplete
+C:\Users\Usuario\documents\Github\crm-app\backend\src\Application\CrmApp.Application\obj\Debug\net8.0\CrmApp.Application.dll
+C:\Users\Usuario\documents\Github\crm-app\backend\src\Application\CrmApp.Application\obj\Debug\net8.0\refint\CrmApp.Application.dll
+C:\Users\Usuario\documents\Github\crm-app\backend\src\Application\CrmApp.Application\obj\Debug\net8.0\CrmApp.Application.pdb
+C:\Users\Usuario\documents\Github\crm-app\backend\src\Application\CrmApp.Application\obj\Debug\net8.0\ref\CrmApp.Application.dll

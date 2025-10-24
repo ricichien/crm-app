@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "419/ujQ7lWqod6C5AEkwaQvRl8qmDcSQKxvipldzM8A=",
+  "Source": "CrmApp.Api",
+  "BasePath": "_content/CrmApp.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

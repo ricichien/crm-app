@@ -1,0 +1,98 @@
+<h2 mat-dialog-title>
+  {{ isEditMode ? 'Edit Lead' : 'New Lead' }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName" required>
+        <mat-error *ngIf="form.get('firstName')?.hasError('required')">
+          First name is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName" required>
+        <mat-error *ngIf="form.get('lastName')?.hasError('required')">
+          Last name is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" required>
+        <mat-error *ngIf="form.get('email')?.hasError('required')">
+          Email is required
+        </mat-error>
+        <mat-error *ngIf="form.get('email')?.hasError('email')">
+          Please enter a valid email
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Phone</mat-label>
+        <input matInput type="tel" formControlName="phone">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Company</mat-label>
+        <input matInput formControlName="company">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Job Title</mat-label>
+        <input matInput formControlName="jobTitle">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Source</mat-label>
+        <mat-select formControlName="source" required>
+          <mat-option *ngFor="let source of leadSources" [value]="source.value">
+            {{ source.label }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('source')?.hasError('required')">
+          Source is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status" required>
+          <mat-option *ngFor="let status of leadStatuses" [value]="status.value">
+            {{ status.label }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('status')?.hasError('required')">
+          Status is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full sm:col-span-2">
+        <mat-label>Notes</mat-label>
+        <textarea matInput formControlName="notes" rows="3"></textarea>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="p-4">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button 
+    mat-flat-button 
+    color="primary" 
+    [disabled]="form.invalid || isSubmitting"
+    (click)="onSubmit()"
+  >
+    <span *ngIf="isSubmitting" class="flex items-center">
+      <mat-spinner diameter="20" class="mr-2"></mat-spinner>
+      Saving...
+    </span>
+    <span *ngIf="!isSubmitting">
+      {{ isEditMode ? 'Update' : 'Create' }} Lead
+    </span>
+  </button>
+</mat-dialog-actions>
