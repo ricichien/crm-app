@@ -1,6 +1,8 @@
 <div class="board-root">
   <h2>Task Board</h2>
 
+  <button (click)="createNewTask()">New Task</button>
+
   <div *ngIf="loading">Loading tasks...</div>
   <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
 
@@ -13,11 +15,22 @@
         class="drop-list"
         (cdkDropListDropped)="drop($event, status)"
       >
-        <div class="task-card" *ngFor="let task of tasksByStatus[status]" cdkDrag>
+        <div
+          class="task-card"
+          *ngFor="let task of tasksByStatus[status]"
+          cdkDrag
+          (click)="editTask(task)"
+        >
           <div class="task-title">{{ task.title }}</div>
           <div class="task-desc">{{ task.description }}</div>
         </div>
       </div>
     </div>
   </div>
+
+  <app-task-form
+    *ngIf="editingTask !== undefined"
+    [task]="editingTask"
+    (saved)="onTaskSaved($event)"
+  ></app-task-form>
 </div>

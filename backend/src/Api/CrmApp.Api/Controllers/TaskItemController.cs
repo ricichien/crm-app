@@ -1,5 +1,4 @@
-using System;
-using System.Threading.Tasks; // para Task<T>
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CrmApp.Application.Interfaces;
 using CrmApp.Domain.Entities;
@@ -10,24 +9,24 @@ using DomainTaskStatus = CrmApp.Domain.Entities.TaskStatus;
 namespace CrmApp.Api.Controllers
 {
     [ApiController]
-    [Route("api/tasks")]
+    [Route("api/[controller]")]
+    [Authorize] // todos os endpoints protegidos
     public class TaskItemsController : ControllerBase
     {
         private readonly ITaskItemRepository _repo;
+        private readonly ILogger<TaskItemsController> _logger;
 
-        public TaskItemsController(ITaskItemRepository repo)
+        public TaskItemsController(ITaskItemRepository repo, ILogger<TaskItemsController> logger)
         {
             _repo = repo;
+            _logger = logger;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll() => Ok(await _repo.GetAllAsync());
-
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] TaskItem task)
+        public async Task<IActionResult> GetAll()
         {
-            var created = await _repo.CreateAsync(task);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            var tasks = await _repo.GetAllAsync();
+            return Ok(tasks);
         }
 
         [HttpGet("{id:int}")]
@@ -38,6 +37,13 @@ namespace CrmApp.Api.Controllers
             return Ok(task);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] TaskItem task)
+        {
+            var created = await _repo.CreateAsync(task);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        }
+
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] TaskItem task)
         {
@@ -46,20 +52,20 @@ namespace CrmApp.Api.Controllers
             return Ok(updated);
         }
 
+        // Endpoint para mover task e atualizar order/status
         [HttpPost("move")]
         public async Task<IActionResult> Move([FromBody] MoveTaskDto dto)
         {
             var task = await _repo.GetByIdAsync(dto.TaskId);
             if (task == null) return NotFound();
 
-            task.Status = (CrmApp.Domain.Entities.TaskStatus)dto.NewStatus; // seguro porque dto usa alias
+            task.Status = (DomainTaskStatus)dto.NewStatus;
             task.Order = dto.NewOrder;
             var updated = await _repo.UpdateAsync(task);
             return Ok(updated);
         }
     }
 
-    // usa alias DomainTaskStatus para não conflitar com System.Threading.Tasks.TaskStatus
     public class MoveTaskDto
     {
         public int TaskId { get; set; }
@@ -67,60 +73,3 @@ namespace CrmApp.Api.Controllers
         public int NewOrder { get; set; }
     }
 }
-
-// [ApiController]
-// [Route("api/tasks")]
-// public class TaskItemsController : ControllerBase
-// {
-//     private readonly ITaskItemRepository _repo;
-
-//     public TaskItemsController(ITaskItemRepository repo)
-//     {
-//         _repo = repo;
-//     }
-
-//     [HttpGet]
-//     public async Task<IActionResult> GetAll() => Ok(await _repo.GetAllAsync());
-
-//     [HttpPost]
-//     public async Task<IActionResult> Create(TaskItem task)
-//     {
-//         var created = await _repo.CreateAsync(task);
-//         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
-//     }
-
-//     [HttpGet("{id}")]
-//     public async Task<IActionResult> GetById(int id)
-//     {
-//         var task = await _repo.GetByIdAsync(id);
-//         if (task == null) return NotFound();
-//         return Ok(task);
-//     }
-
-//     [HttpPut("{id}")]
-//     public async Task<IActionResult> Update(int id, TaskItem task)
-//     {
-//         task.Id = id;
-//         var updated = await _repo.UpdateAsync(task);
-//         return Ok(updated);
-//     }
-
-//     [HttpPost("move")]
-//     public async Task<IActionResult> Move([FromBody] MoveTaskDto dto)
-//     {
-//         var task = await _repo.GetByIdAsync(dto.TaskId);
-//         if (task == null) return NotFound();
-
-//         task.Status = dto.NewStatus;
-//         task.Order = dto.NewOrder;
-//         var updated = await _repo.UpdateAsync(task);
-//         return Ok(updated);
-//     }
-// }
-
-// public class MoveTaskDto
-// {
-//     public int TaskId { get; set; }
-//     public TaskStatus NewStatus { get; set; }
-//     public int NewOrder { get; set; }
-// }

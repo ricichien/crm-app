@@ -85,6 +85,9 @@ namespace CrmApp.Infrastructure.Persistence.Migrations
                     b.Property<int?>("LeadId1")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Priority")
                         .HasColumnType("INTEGER");
 

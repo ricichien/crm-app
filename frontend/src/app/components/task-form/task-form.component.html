@@ -1,0 +1,24 @@
+<div class="task-form">
+  <h3>{{ task.id ? 'Edit Task' : 'New Task' }}</h3>
+
+  <label>Title</label>
+  <input [(ngModel)]="task.title" placeholder="Task title" />
+
+  <label>Description</label>
+  <textarea [(ngModel)]="task.description"></textarea>
+
+  <label>Priority</label>
+  <select [(ngModel)]="task.priority">
+    <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+  </select>
+
+  <label>Status</label>
+  <select [(ngModel)]="task.status">
+    <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+  </select>
+
+  <div class="buttons">
+    <button (click)="save()">Save</button>
+    <button (click)="cancel()">Cancel</button>
+  </div>
+</div>

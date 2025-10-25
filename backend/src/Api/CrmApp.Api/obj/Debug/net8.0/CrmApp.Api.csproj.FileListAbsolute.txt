@@ -180,3 +180,11 @@ C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Api\CrmApp.Api\obj\Debug\n
 C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Api\CrmApp.Api\obj\Debug\net8.0\CrmApp.Api.pdb
 C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Api\CrmApp.Api\obj\Debug\net8.0\CrmApp.Api.genruntimeconfig.cache
 C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Api\CrmApp.Api\obj\Debug\net8.0\ref\CrmApp.Api.dll
+C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Api\CrmApp.Api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Api\CrmApp.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Api\CrmApp.Api\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Api\CrmApp.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Api\CrmApp.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Api\CrmApp.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Api\CrmApp.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Api\CrmApp.Api\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
