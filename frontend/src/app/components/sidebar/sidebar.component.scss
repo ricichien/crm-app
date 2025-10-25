@@ -1,0 +1,115 @@
+.sidebar {
+  width: 220px;
+  background: #0f1724;
+  color: #e6eef8;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  box-sizing: border-box;
+  gap: 12px;
+  transition: width 0.2s ease;
+
+  &.expanded {
+    width: 320px;
+  }
+
+  .brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .brand {
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 8px;
+      transition: opacity 0.2s;
+    }
+
+    .toggle-btn {
+      background: transparent;
+      border: none;
+      color: #e6eef8;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.03);
+      }
+    }
+  }
+
+  .menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .icon {
+        width: 30px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+
+      .label {
+        white-space: nowrap;
+        overflow: hidden;
+        transition: opacity 0.2s, width 0.2s;
+      }
+    }
+
+    a {
+      color: #cfe8ff;
+      text-decoration: none;
+      padding: 8px 10px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      transition: background 0.2s;
+
+      &.active {
+        background: #1e293b;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.03);
+      }
+    }
+  }
+
+  .bottom-note {
+    margin-top: auto;
+    font-size: 12px;
+    color: #9fb6d9;
+    transition: opacity 0.2s;
+  }
+
+  // quando estiver colapsado
+  &:not(.expanded) {
+    width: 60px;
+
+    .brand,
+    .menu .menu-item .label,
+    .bottom-note {
+      opacity: 0;
+      width: 0;
+      overflow: hidden;
+    }
+
+    .menu .menu-item {
+      justify-content: center;
+    }
+  }
+}

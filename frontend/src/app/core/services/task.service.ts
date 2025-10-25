@@ -16,7 +16,7 @@ export interface TaskItem {
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
-  private apiUrl = 'http://localhost:5256/api/tasks'; // ajuste a porta do backend
+  private apiUrl = 'http://localhost:5256/api/TaskItems'; // ajuste a porta do backend
 
   constructor(private http: HttpClient) {}
 

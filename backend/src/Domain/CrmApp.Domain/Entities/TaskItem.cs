@@ -10,9 +10,9 @@ public class TaskItem : AuditableEntity
     public DateTime DueDate { get; set; }
     public TaskPriority Priority { get; set; } = TaskPriority.Medium;
     public TaskStatus Status { get; set; } = TaskStatus.Pending;
-    public Guid? LeadId { get; set; }
+    public int? LeadId { get; set; }
     public virtual Lead? Lead { get; set; }
-    public int Order { get; set; } = 0;
+    public int Order { get; set; }
 }
 
 public enum TaskStatus

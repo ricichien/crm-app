@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -33,10 +34,15 @@ export class TaskBoardComponent implements OnInit {
 
   editingTask?: TaskItem;
 
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService, private router: Router) {}
 
   ngOnInit() {
     this.loadTasks();
+  }
+
+  get showBoard(): boolean {
+    const hiddenRoutes = ['/login', '/register'];
+    return !hiddenRoutes.includes(this.router.url);
   }
 
   loadTasks() {

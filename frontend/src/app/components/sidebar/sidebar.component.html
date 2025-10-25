@@ -1,9 +1,22 @@
-<nav class="sidebar">
-  <div class="brand">CRM App</div>
+<nav class="sidebar" [class.expanded]="isExpanded">
+  <div class="brand-row">
+    <div class="brand">CRM App</div>
+    <button type="button" class="toggle-btn" (click)="toggle()" aria-label="Toggle sidebar">
+      <span *ngIf="!isExpanded">☰</span>
+      <span *ngIf="isExpanded">✕</span>
+    </button>
+  </div>
 
   <ul class="menu">
-    <li *ngFor="let item of menu">
-      <a [routerLink]="item.path" routerLinkActive="active">{{ item.label }}</a>
+    <li *ngFor="let item of menu" class="menu-item">
+      <a
+        [routerLink]="item.path"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <mat-icon>{{ item.icon }}</mat-icon>
+        <span class="label" *ngIf="isExpanded">{{ item.label }}</span>
+      </a>
     </li>
   </ul>
 
