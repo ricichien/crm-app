@@ -6,6 +6,8 @@
 
 <img width="1293" height="784" alt="Captura de tela 2025-10-27 171639" src="https://github.com/user-attachments/assets/df2d496c-e95f-4b37-b27c-e2b88c37c59f" />
 
+video: https://youtu.be/gRwpKKxL0to
+
 <h2>1. Pré-requisitos</h2>
 <ul>
   <li>.NET SDK compatível (verifique <code>global.json</code> quando presente). Instale o SDK em <code>https://dotnet.microsoft.com/</code>.</li>
