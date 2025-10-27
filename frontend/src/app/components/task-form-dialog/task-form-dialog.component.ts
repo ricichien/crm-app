@@ -204,34 +204,69 @@ import { finalize } from 'rxjs/operators';
         flex-direction: column;
         margin: 0 auto;
       }
+
       .dialog-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 12px 16px;
         gap: 12px;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+        position: relative;
       }
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
       .title h2 {
         margin: 0;
         font-size: 1.05rem;
+        font-weight: 600;
       }
-      .close-btn {
-        margin-left: 8px;
-      }
+
       mat-dialog-content {
-        padding: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 16px 24px;
+        box-sizing: border-box;
       }
-      .dialog-actions {
-        padding: 12px 16px;
-      }
+
       app-task-form {
         width: 100%;
         max-width: 520px;
+        margin: 0 auto;
       }
 
-      /* delete button visual */
+      .dialog-actions {
+        padding: 12px 16px;
+        border-top: 1px solid rgba(15, 23, 42, 0.06);
+      }
+
       .delete-btn {
-        color: rgba(220, 38, 38, 0.85); /* vermelho leve */
+        color: rgba(220, 38, 38, 0.85);
+        transition: color 0.2s ease;
+      }
+
+      .delete-btn:hover {
+        color: #dc2626;
+      }
+
+      .close-btn {
+        color: #444;
+      }
+
+      .close-btn:hover {
+        color: #000;
       }
     `,
   ],
