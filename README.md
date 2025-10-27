@@ -1,6 +1,6 @@
-<h1>CrmApp — Guia de execução (para avaliadores / recrutadores)</h1>
+<h1>CrmApp — Guia de execução</h1>
 
-<p>Este documento descreve, de forma objetiva e profissional, os passos necessários para executar a API <strong>CrmApp</strong> localmente usando as migrations do Entity Framework Core com SQLite. Pressupõe-se que o repositório já esteja clonado e que as migrations tenham sido criadas no projeto.</p>
+<p>Passos necessários para executar a API <strong>CrmApp</strong> localmente usando as migrations do Entity Framework Core com SQLite. Pressupõe-se que o repositório já esteja clonado e que as migrations tenham sido criadas no projeto.</p>
 
 <img width="1293" height="784" alt="Captura de tela 2025-10-27 171639" src="https://github.com/user-attachments/assets/df2d496c-e95f-4b37-b27c-e2b88c37c59f" />
 
