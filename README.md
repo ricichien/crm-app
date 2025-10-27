@@ -46,6 +46,9 @@ dotnet build --configuration Release
 <img width="2541" height="942" alt="Captura de tela 2025-10-27 165022" src="https://github.com/user-attachments/assets/bd8457ca-59be-4328-a68c-645564b13c42" />
 
 <p>Observações:</p>
+
+<img width="1851" height="183" alt="image" src="https://github.com/user-attachments/assets/dad85cea-e961-4808-a6ab-d213f706afa8" />
+
 <ul>
   <li>O caminho <code>./Data/CrmApp.db</code> é relativo ao diretório onde a aplicação for executada. Você pode usar um caminho absoluto se preferir.</li>
   <li>As permissões de arquivo devem permitir leitura e escrita no diretório onde o arquivo .db será criado.</li>
