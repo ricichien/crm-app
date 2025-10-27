@@ -45,7 +45,6 @@ export class TaskService {
       order: raw.order ?? 0,
       createdAt: raw.createdAt ?? new Date().toISOString(),
       lastModifiedAt: raw.lastModifiedAt ?? raw.updatedAt ?? new Date().toISOString(),
-
       lead: raw.lead ?? undefined,
       leadName:
         raw.leadName ??

@@ -26,7 +26,6 @@ import { TaskFormDialogComponent } from '../task-form-dialog/task-form-dialog.co
     MatIconModule,
     MatButtonModule,
     NavbarComponent,
-    // TaskFormDialogComponent is intentionally in imports because it's opened via MatDialog.
     TaskFormDialogComponent,
   ],
   templateUrl: './task-board.component.html',
@@ -148,7 +147,9 @@ export class TaskBoardComponent implements OnInit {
 
   openCreateDialog(): void {
     const ref = this.dialog.open(TaskFormDialogComponent, {
-      width: '720px',
+      width: '100%',
+      maxWidth: '720px',
+      maxHeight: '90vh',
       data: { leadId: undefined, task: undefined },
       panelClass: 'task-dialog-panel',
       hasBackdrop: true,
@@ -209,7 +210,6 @@ export class TaskBoardComponent implements OnInit {
 
   getPriorityClass(task: Task): string {
     if (!task) return 'priority-low';
-    // priority first
     switch (task.priority) {
       case TaskPriority.Urgent:
         return 'priority-urgent';
