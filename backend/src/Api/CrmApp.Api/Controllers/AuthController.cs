@@ -30,23 +30,12 @@ public class AuthController : ControllerBase
         var user = await _userService.GetByUsernameAsync(request.Username);
         if (user == null) return Unauthorized();
 
-        // Verifica a senha
         if (!UserServiceHelpers.VerifyPassword(request.Password, user.PasswordHash))
             return Unauthorized("Invalid credentials");
 
         var token = GenerateJwtToken(user.Username);
         return Ok(new { token });
     }
-
-    /*
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] UserRegisterDto dto)
-    {
-        // Opcional: proteger por header X-Admin-Key ou permitir só em dev
-        var created = await _userService.RegisterAsync(dto);
-        return Ok(new { created.Id, created.Username, created.Email });
-    }
-    */
 
     private string GenerateJwtToken(string username)
     {

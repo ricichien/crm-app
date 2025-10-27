@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CrmApp.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+71b45872d3beaca105b73dee3523419122c073dd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73944158842dd91c9bfb1177d34cfcff07caec81")]
 [assembly: System.Reflection.AssemblyProductAttribute("CrmApp.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CrmApp.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

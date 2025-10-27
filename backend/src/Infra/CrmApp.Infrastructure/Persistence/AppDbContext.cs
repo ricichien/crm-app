@@ -20,7 +20,6 @@ namespace CrmApp.Infrastructure.Persistence
         {
             base.OnModelCreating(modelBuilder);
 
-            // --- filtro global para soft-delete (IsDeleted) em todas as entidades AuditableEntity
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
                 var clrType = entityType.ClrType;
@@ -35,7 +34,6 @@ namespace CrmApp.Infrastructure.Persistence
                 }
             }
 
-            // --- Users
             modelBuilder.Entity<User>(b =>
             {
                 b.ToTable("Users");
@@ -45,7 +43,6 @@ namespace CrmApp.Infrastructure.Persistence
                 b.Property(u => u.PasswordHash).IsRequired();
             });
 
-            // --- Leads
             modelBuilder.Entity<Lead>(b =>
             {
                 b.ToTable("Leads");
@@ -55,11 +52,9 @@ namespace CrmApp.Infrastructure.Persistence
                 b.Property(l => l.Email).HasMaxLength(200);
                 b.Property(l => l.Company).HasMaxLength(200);
 
-                // opcional: índices
                 b.HasIndex(l => l.Email).IsUnique(false);
             });
 
-            // --- TaskItems
             modelBuilder.Entity<TaskItem>(b =>
             {
                 b.ToTable("TaskItems");

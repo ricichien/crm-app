@@ -35,7 +35,6 @@ namespace CrmApp.Infrastructure.Services
                 );
             }
 
-            // futura ordenação dinâmica (opcional)
             var totalCount = await query.CountAsync(cancellationToken);
 
             var items = await query
@@ -51,8 +50,8 @@ namespace CrmApp.Infrastructure.Services
                     Phone = l.Phone,
                     Company = l.Company,
                     JobTitle = l.JobTitle,
-                    Source = l.Source,          // enum já unificado (Domain.Enums)
-                    Status = l.Status,          // enum já unificado (Domain.Enums)
+                    Source = l.Source,          
+                    Status = l.Status,         
                     Notes = l.Notes,
                     CreatedAt = l.CreatedAt,
                     LastModifiedAt = l.LastModifiedAt
@@ -160,7 +159,6 @@ namespace CrmApp.Infrastructure.Services
             };
         }
 
-        // Soft-delete: marca IsDeleted = true e atualiza LastModifiedAt
         public async Task<bool> DeleteLeadAsync(int id, CancellationToken cancellationToken = default)
         {
             var lead = await _context.Leads.FindAsync(new object[] { id }, cancellationToken);
@@ -173,7 +171,6 @@ namespace CrmApp.Infrastructure.Services
             return true;
         }
 
-        // ---------- Tasks ----------
         public async Task<IEnumerable<TaskItemDto>> GetTasksByLeadIdAsync(int leadId, CancellationToken cancellationToken = default)
         {
             var leadExists = await _context.Leads.AnyAsync(l => l.Id == leadId, cancellationToken);

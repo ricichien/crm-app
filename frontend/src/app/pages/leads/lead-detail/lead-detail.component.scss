@@ -17,14 +17,12 @@
     font-size: 1.125rem;
   }
 
-  /* FORM LAYOUT */
   form.lead-form-inline {
     display: grid;
     grid-template-columns: 1fr;
     gap: 12px;
   }
 
-  /* two-cols == duas colunas responsivas */
   .two-cols {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -36,7 +34,6 @@
     width: 100%;
   }
 
-  /* actions (buttons) alinhados à direita */
   .actions {
     display: flex;
     gap: 12px;
@@ -44,7 +41,6 @@
     margin-top: 6px;
   }
 
-  /* TASKS */
   .lead-tasks {
     margin-top: 18px;
 
@@ -108,7 +104,6 @@
     }
   }
 
-  /* small screens */
   @media (max-width: 720px) {
     .two-cols {
       grid-template-columns: 1fr;
@@ -116,7 +111,6 @@
   }
 }
 
-/* Dialog panel styles (panelClass: 'task-dialog-panel') */
 .task-dialog-panel .mat-dialog-container {
   padding: 0;
   border-radius: 12px;
@@ -124,7 +118,6 @@
   box-shadow: 0 16px 48px rgba(2, 6, 23, 0.5);
 }
 
-/* Dialog header inside the dialog content (put a header element inside your dialog template) */
 .task-dialog-panel .dialog-header {
   display: flex;
   align-items: center;

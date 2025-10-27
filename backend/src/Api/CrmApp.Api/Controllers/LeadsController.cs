@@ -8,7 +8,7 @@ namespace CrmApp.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize] // protege todos os endpoints deste controller
+    [Authorize] 
     public class LeadsController : ControllerBase
     {
         private readonly ILeadService _leadService;
@@ -20,7 +20,6 @@ namespace CrmApp.Api.Controllers
             _logger = logger;
         }
 
-        // GET: api/leads
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<LeadDto>>> GetLeads(
@@ -46,7 +45,6 @@ namespace CrmApp.Api.Controllers
             return Ok(result.Items);
         }
 
-        // GET: api/leads/{id}
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -74,7 +72,6 @@ namespace CrmApp.Api.Controllers
             return CreatedAtAction(nameof(GetLead), new { id = lead.Id }, lead);
         }
 
-        // PUT: api/leads/{id}
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -95,7 +92,6 @@ namespace CrmApp.Api.Controllers
         }
 
 
-        // DELETE: api/leads/{id}
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -108,9 +104,8 @@ namespace CrmApp.Api.Controllers
             return NoContent();
         }
 
-        // GET: api/leads/sources
         [HttpGet("sources")]
-        [AllowAnonymous] // público
+        [AllowAnonymous] 
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetLeadSources()
         {
@@ -120,9 +115,8 @@ namespace CrmApp.Api.Controllers
             return Ok(sources);
         }
 
-        // GET: api/leads/statuses
         [HttpGet("statuses")]
-        [AllowAnonymous] // público
+        [AllowAnonymous] 
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetLeadStatuses()
         {
@@ -132,7 +126,6 @@ namespace CrmApp.Api.Controllers
             return Ok(statuses);
         }
 
-        // GET: api/leads/{leadId}/tasks
         [HttpGet("{leadId:int}/tasks")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -146,7 +139,6 @@ namespace CrmApp.Api.Controllers
             return Ok(tasks);
         }
 
-        // POST: api/leads/{leadId}/tasks
         [HttpPost("{leadId:int}/tasks")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

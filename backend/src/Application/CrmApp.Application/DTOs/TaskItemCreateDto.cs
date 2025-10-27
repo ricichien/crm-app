@@ -12,7 +12,6 @@ namespace CrmApp.Application.DTOs
 
         public string? Description { get; set; }
 
-        // aceita null
         public DateTime? DueDate { get; set; }
 
         public TaskPriority Priority { get; set; } = TaskPriority.Medium;

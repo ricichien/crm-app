@@ -1,4 +1,3 @@
-// FILE: backend/src/Application/CrmApp.Application/Interfaces/ILeadService.cs
 using CrmApp.Application.DTOs;
 using CrmApp.Domain.Common;
 

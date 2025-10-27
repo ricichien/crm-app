@@ -1,4 +1,3 @@
-// Atualizado: retorna Lead[] | PaginatedResult<Lead> e lê X-Pagination header quando presente
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
@@ -31,13 +30,6 @@ export class LeadService {
     return this.http.delete<void>(`${this.api}/${id}`);
   }
 
-  /**
-   * List leads supporting both:
-   * - array response body (legacy/simple)
-   * - paginated response where body is items and pagination is in X-Pagination header
-   *
-   * Returns Observable<Lead[] | PaginatedResult<Lead>>
-   */
   list(
     search = '',
     status?: string,
@@ -49,13 +41,11 @@ export class LeadService {
     if (search) params = params.set('search', search);
     if (status) params = params.set('status', status);
 
-    // Observe full response to be able to read headers (X-Pagination)
     return this.http.get<Lead[]>(this.api, { params, observe: 'response' }).pipe(
       map((response) => {
         const body = response.body ?? [];
         const paginationHeader = response.headers.get('X-Pagination');
         if (paginationHeader) {
-          // header shape may vary in casing; try to parse defensively
           const p = JSON.parse(paginationHeader);
           const paginated: PaginatedResult<Lead> = {
             items: body,
@@ -68,17 +58,8 @@ export class LeadService {
           return paginated;
         }
 
-        // If no pagination header, just return the array
         return body;
       })
     );
   }
-  // deleteLead(id: string) {
-  //   return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
-  //     catchError((err) => {
-  //       console.error('deleteLead error', err);
-  //       return throwError(() => err?.error ?? err);
-  //     })
-  //   );
-  // }
 }

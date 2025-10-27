@@ -54,7 +54,6 @@ export class LeadsListComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  // pagination state
   page = 1;
   pageSize = 20;
   totalPages = 1;

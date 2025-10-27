@@ -132,11 +132,9 @@
     </div>
   </div>
 
-  <!-- Empty/Error -->
   <div *ngIf="!loading && !leads?.length && !error" class="empty">No leads found.</div>
   <div *ngIf="error" class="error">{{ error }}</div>
 
-  <!-- Paginator -->
   <div *ngIf="!loading && totalCount > pageSize" class="paginator-wrap">
     <mat-paginator
       [length]="totalCount"

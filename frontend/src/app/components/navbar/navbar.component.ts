@@ -11,7 +11,6 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class NavbarComponent {
   onNewTask(): void {
-    // Replace with dialog open or router navigation
     console.log('New Task clicked');
   }
 }

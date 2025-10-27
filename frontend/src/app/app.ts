@@ -17,7 +17,6 @@ export class App implements OnDestroy {
   private sub = new Subscription();
 
   constructor(private router: Router, private authService: AuthService) {
-    // Listen to route changes and toggle sidebar visibility for login
     const s = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         const isLogin = this.router.url.includes('/login');
