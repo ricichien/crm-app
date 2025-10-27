@@ -17,4 +17,21 @@ namespace CrmApp.Domain.Enums
         Email,
         Other
     }
+
+    public enum TaskItemStatus
+    {
+        Pending,
+        InProgress,
+        Completed,
+        Deferred,
+        Cancelled
+    }
+
+    public enum TaskPriority
+    {
+        Low,
+        Medium,
+        High,
+        Urgent
+    }
 }

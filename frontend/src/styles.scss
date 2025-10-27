@@ -1,17 +1,60 @@
 /* src/styles.scss - tema prebuilt (rápido e sem erro de @use) */
 @import '@angular/material/prebuilt-themes/azure-blue.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
 /* estilos globais */
-html, body {
-  height: 100%;
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
-  background: #f4f6fb;
+// html,
+// body {
+//   height: 100%;
+//   margin: 0;
+//   font-family: Roboto, 'Helvetica Neue', Arial, sans-serif;
+//   background: #f4f6fb;
+// }
+
+html,
+body * {
+  font-family: 'Inter', Roboto, sans-serif;
+  color: #374151;
+  // background: #f4f6fb;
+  // height: 100%;
+}
+
+// :root {
+//   --sidebar-bg: #1e293b; /* azul escuro */
+//   --sidebar-bg-accent: #0b1220;
+//   --sidebar-text: #e6eef8;
+//   --sidebar-muted: #9fb6d9;
+//   --sidebar-active: #334155;
+//   --sidebar-hover: rgba(255, 255, 255, 0.05);
+// }
+
+.task-dialog-panel .mat-dialog-container {
+  border-radius: 8px;
+  padding: 0;
+  max-width: 720px;
+}
+
+/* botão X */
+.task-dialog-panel .close-btn {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+/* backdrop mais escuro */
+.cdk-overlay-backdrop {
+  background-color: rgba(0, 0, 0, 0.6) !important;
 }
 
 /* pequenas utilidades */
-.app-root { min-height: 100vh; display: flex; }
-.main-area { flex: 1; padding: 16px; }
+.app-root {
+  min-height: 100vh;
+  display: flex;
+}
+.main-area {
+  flex: 1;
+  padding: 16px;
+}
 
 // // Include theming for Angular Material with `mat.theme()`.
 // // This Sass mixin will define CSS variables that are used for styling Angular Material

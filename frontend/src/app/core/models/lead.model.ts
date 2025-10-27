@@ -1,3 +1,5 @@
+import { LeadSource, LeadStatus } from '../enums/lead.enum';
+
 export interface Lead {
   id: string;
   firstName: string;
@@ -36,28 +38,4 @@ export interface PaginatedResult<T> {
   hasNextPage: boolean;
 }
 
-export enum LeadStatus {
-  New = 'New',
-  Contacted = 'Contacted',
-  Qualified = 'Qualified',
-  Unqualified = 'Unqualified',
-  Customer = 'Customer'
-}
-
-export enum LeadSource {
-  Website = 'Website',
-  Referral = 'Referral',
-  SocialMedia = 'SocialMedia',
-  Email = 'Email',
-  Other = 'Other'
-}
-
-export const LEAD_STATUS_OPTIONS = Object.entries(LeadStatus).map(([key, value]) => ({
-  value,
-  label: value
-}));
-
-export const LEAD_SOURCE_OPTIONS = Object.entries(LeadSource).map(([key, value]) => ({
-  value,
-  label: value
-}));
+export { LeadSource, LeadStatus };

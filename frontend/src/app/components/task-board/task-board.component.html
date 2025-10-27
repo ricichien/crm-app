@@ -1,36 +1,51 @@
-<div class="board-root">
-  <h2>Task Board</h2>
+<app-navbar></app-navbar>
 
-  <button (click)="createNewTask()">New Task</button>
+<div class="layout">
+  <!-- optional: add <app-sidebar> here if you want a visible sidebar -->
+  <main class="content">
+    <div class="task-board">
+      <h1 class="board-title">Task Board</h1>
 
-  <div *ngIf="loading">Loading tasks...</div>
-  <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+      <div class="columns">
+        <div class="column" *ngFor="let s of statuses" [attr.data-key]="s.toString()">
+          <h3>{{ s }}</h3>
 
-  <div class="board">
-    <div class="column" *ngFor="let status of statuses">
-      <h3 class="col-title">{{ status }}</h3>
-      <div
-        cdkDropList
-        [cdkDropListData]="tasksByStatus[status]"
-        class="drop-list"
-        (cdkDropListDropped)="drop($event, status)"
-      >
-        <div
-          class="task-card"
-          *ngFor="let task of tasksByStatus[status]"
-          cdkDrag
-          (click)="editTask(task)"
-        >
-          <div class="task-title">{{ task.title }}</div>
-          <div class="task-desc">{{ task.description }}</div>
+          <div
+            cdkDropList
+            [id]="s.toString()"
+            class="drop-list"
+            [cdkDropListData]="tasksByStatus[s.toString()]"
+            [cdkDropListConnectedTo]="connectedTo(s)"
+            (cdkDropListDropped)="drop($event, s)"
+          >
+            <div
+              class="task-card"
+              *ngFor="let t of tasksByStatus[s.toString()]; let i = index"
+              cdkDrag
+              (cdkDragStarted)="onDragStarted()"
+              (cdkDragEnded)="onDragEnded()"
+              (click)="onCardClick(t)"
+            >
+              <div class="card-header" cdkDragHandle>
+                <div class="title-left">
+                  <strong class="task-title">{{ t.title }}</strong>
+                </div>
+                <div class="card-side">
+                  <span class="meta" *ngIf="t.dueDate">{{ t.dueDate | date : 'shortDate' }}</span>
+                </div>
+              </div>
+
+              <div class="card-body">{{ t.description }}</div>
+
+              <div class="card-footer">
+                <span class="badge">$450</span>
+                <span class="badge">Urgent</span>
+                <span class="status-dot urgent-dot" title="priority"></span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <app-task-form
-    *ngIf="editingTask !== undefined"
-    [task]="editingTask"
-    (saved)="onTaskSaved($event)"
-  ></app-task-form>
+  </main>
 </div>

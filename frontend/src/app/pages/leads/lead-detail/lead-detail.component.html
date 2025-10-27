@@ -1,98 +1,86 @@
-<h2 mat-dialog-title>
-  {{ isEditMode ? 'Edit Lead' : 'New Lead' }}
-</h2>
+<div class="lead-detail">
+  <div class="lead-form">
+    <h3>{{ isEditMode ? 'Edit Lead' : 'New Lead' }}</h3>
 
-<mat-dialog-content>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>First Name</mat-label>
-        <input matInput formControlName="firstName" required>
-        <mat-error *ngIf="form.get('firstName')?.hasError('required')">
-          First name is required
-        </mat-error>
-      </mat-form-field>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <mat-form-field appearance="outline"
+          ><mat-label>First name</mat-label><input matInput formControlName="firstName"
+        /></mat-form-field>
+        <mat-form-field appearance="outline"
+          ><mat-label>Last name</mat-label><input matInput formControlName="lastName"
+        /></mat-form-field>
+      </div>
 
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Last Name</mat-label>
-        <input matInput formControlName="lastName" required>
-        <mat-error *ngIf="form.get('lastName')?.hasError('required')">
-          Last name is required
-        </mat-error>
-      </mat-form-field>
+      <mat-form-field appearance="outline" class="full"
+        ><mat-label>Email</mat-label><input matInput formControlName="email"
+      /></mat-form-field>
 
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" required>
-        <mat-error *ngIf="form.get('email')?.hasError('required')">
-          Email is required
-        </mat-error>
-        <mat-error *ngIf="form.get('email')?.hasError('email')">
-          Please enter a valid email
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Phone</mat-label>
-        <input matInput type="tel" formControlName="phone">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Company</mat-label>
-        <input matInput formControlName="company">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Job Title</mat-label>
-        <input matInput formControlName="jobTitle">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="w-full">
+      <mat-form-field appearance="outline">
         <mat-label>Source</mat-label>
-        <mat-select formControlName="source" required>
-          <mat-option *ngFor="let source of leadSources" [value]="source.value">
-            {{ source.label }}
-          </mat-option>
+        <mat-select formControlName="source">
+          <mat-option *ngFor="let s of leadSources" [value]="s.value">{{ s.label }}</mat-option>
         </mat-select>
-        <mat-error *ngIf="form.get('source')?.hasError('required')">
-          Source is required
-        </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="w-full">
+      <mat-form-field appearance="outline">
         <mat-label>Status</mat-label>
-        <mat-select formControlName="status" required>
-          <mat-option *ngFor="let status of leadStatuses" [value]="status.value">
-            {{ status.label }}
-          </mat-option>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let s of leadStatuses" [value]="s.value">{{ s.label }}</mat-option>
         </mat-select>
-        <mat-error *ngIf="form.get('status')?.hasError('required')">
-          Status is required
-        </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="w-full sm:col-span-2">
-        <mat-label>Notes</mat-label>
-        <textarea matInput formControlName="notes" rows="3"></textarea>
-      </mat-form-field>
+      <div class="actions">
+        <button mat-button type="button" (click)="close()">Cancel</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="isSubmitting">
+          {{ isEditMode ? 'Save' : 'Create' }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <hr />
+
+  <div class="lead-tasks">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <h4>Tasks</h4>
+      <button mat-flat-button color="primary" (click)="openAddTask()">+ Add Task</button>
     </div>
-  </form>
-</mat-dialog-content>
 
-<mat-dialog-actions align="end" class="p-4">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button 
-    mat-flat-button 
-    color="primary" 
-    [disabled]="form.invalid || isSubmitting"
-    (click)="onSubmit()"
-  >
-    <span *ngIf="isSubmitting" class="flex items-center">
-      <mat-spinner diameter="20" class="mr-2"></mat-spinner>
-      Saving...
-    </span>
-    <span *ngIf="!isSubmitting">
-      {{ isEditMode ? 'Update' : 'Create' }} Lead
-    </span>
-  </button>
-</mat-dialog-actions>
+    <div *ngIf="tasksLoading">Loading tasks...</div>
+
+    <div *ngIf="!tasksLoading && tasks.length === 0" class="empty">No tasks for this lead.</div>
+
+    <div *ngIf="!tasksLoading && tasks.length > 0" class="tasks-list">
+      <div
+        *ngFor="let t of tasks"
+        class="task-row"
+        style="padding: 8px; border-bottom: 1px solid #eee"
+      >
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <div>
+            <div style="font-weight: 600">{{ t.title }}</div>
+            <div style="font-size: 12px; color: #666">
+              {{ t.dueDate | date : 'shortDate' }} • {{ t.priority }}
+            </div>
+          </div>
+          <div>
+            <button mat-icon-button (click)="editTask(t)"><mat-icon>edit</mat-icon></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      *ngIf="showTaskForm"
+      style="margin-top: 12px; background: #fff; padding: 12px; border-radius: 8px"
+    >
+      <app-task-form
+        [task]="editingTask"
+        [leadId]="leadId"
+        (saved)="onTaskSaved($event)"
+        (cancelled)="onTaskCancelled()"
+      ></app-task-form>
+    </div>
+  </div>
+</div>

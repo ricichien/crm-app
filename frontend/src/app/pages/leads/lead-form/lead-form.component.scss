@@ -1,0 +1,24 @@
+.lead-form {
+  max-width: 900px;
+  .row {
+    margin-bottom: 12px;
+  }
+  .two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .full {
+    width: 100%;
+  }
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .error {
+    color: #c62d2d;
+    margin-top: 12px;
+  }
+}

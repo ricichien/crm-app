@@ -1,0 +1,42 @@
+<div class="leads-header">
+  <div class="left">
+    <h2>Leads</h2>
+  </div>
+
+  <div class="filters">
+    <mat-form-field appearance="outline">
+      <mat-label>Search</mat-label>
+      <input matInput [formControl]="search" placeholder="Name or email" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select [formControl]="status">
+        <mat-option value="">All</mat-option>
+        <mat-option *ngFor="let s of leadStatuses" [value]="s.value">{{ s.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" (click)="newLead()">New Lead</button>
+  </div>
+</div>
+
+<mat-list *ngIf="!loading && leads?.length">
+  <mat-list-item *ngFor="let lead of leads" (click)="openDetail(lead)" class="lead-item">
+    <div mat-line class="lead-name">{{ lead.firstName }} {{ lead.lastName }}</div>
+    <div mat-line class="lead-email">{{ lead.email }}</div>
+    <button mat-icon-button (click)="edit(lead, $event)" aria-label="Edit lead">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </mat-list-item>
+</mat-list>
+
+<div *ngIf="loading" class="center">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<div *ngIf="!loading && !leads?.length && !error" class="empty">No leads found.</div>
+
+<div *ngIf="error" class="error">
+  {{ error }}
+</div>

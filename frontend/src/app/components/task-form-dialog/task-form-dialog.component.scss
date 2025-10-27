@@ -1,0 +1,33 @@
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+
+    &.two-cols {
+      > mat-form-field {
+        flex: 1 1 0;
+      }
+    }
+
+    .full {
+      width: 100%;
+    }
+  }
+
+  .form-hint {
+    color: #c2410c;
+    font-size: 0.85rem;
+  }
+}
+
+/* small responsive tweak */
+@media (max-width: 720px) {
+  .task-form .row {
+    flex-direction: column;
+  }
+}

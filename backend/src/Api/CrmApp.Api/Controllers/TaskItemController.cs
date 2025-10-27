@@ -1,16 +1,17 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CrmApp.Application.Interfaces;
+using CrmApp.Application.DTOs;
 using CrmApp.Domain.Entities;
-
-// evita ambiguidade com System.Threading.Tasks.TaskStatus
-using DomainTaskStatus = CrmApp.Domain.Entities.TaskStatus;
+using CrmApp.Domain.Enums;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace CrmApp.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize] // todos os endpoints protegidos
+    [Authorize]
     public class TaskItemsController : ControllerBase
     {
         private readonly ITaskItemRepository _repo;
@@ -38,28 +39,54 @@ namespace CrmApp.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] TaskItem task)
+        public async Task<IActionResult> Create([FromBody] TaskItemCreateDto dto)
         {
-            var created = await _repo.CreateAsync(task);
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+            var entity = new TaskItem
+            {
+                Title = dto.Title,
+                Description = dto.Description,
+                DueDate = dto.DueDate ?? default, // if you prefer nullable in entity, set accordingly
+                Priority = dto.Priority,
+                Status = dto.Status,
+                LeadId = dto.LeadId,
+                Order = dto.Order,
+                CreatedAt = System.DateTime.UtcNow
+            };
+
+            var created = await _repo.CreateAsync(entity);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update(int id, [FromBody] TaskItem task)
+        public async Task<IActionResult> Update(int id, [FromBody] TaskItemUpdateDto dto)
         {
-            task.Id = id;
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+            var task = await _repo.GetByIdAsync(id);
+            if (task == null) return NotFound();
+
+            task.Title = dto.Title;
+            task.Description = dto.Description;
+            task.DueDate = dto.DueDate ?? task.DueDate;
+            task.Priority = dto.Priority;
+            task.Status = dto.Status;
+            task.LeadId = dto.LeadId;
+            task.Order = dto.Order;
+            task.LastModifiedAt = System.DateTime.UtcNow;
+
             var updated = await _repo.UpdateAsync(task);
             return Ok(updated);
         }
 
-        // Endpoint para mover task e atualizar order/status
         [HttpPost("move")]
         public async Task<IActionResult> Move([FromBody] MoveTaskDto dto)
         {
             var task = await _repo.GetByIdAsync(dto.TaskId);
             if (task == null) return NotFound();
 
-            task.Status = (DomainTaskStatus)dto.NewStatus;
+            task.Status = dto.NewStatus;
             task.Order = dto.NewOrder;
             var updated = await _repo.UpdateAsync(task);
             return Ok(updated);
@@ -69,7 +96,7 @@ namespace CrmApp.Api.Controllers
     public class MoveTaskDto
     {
         public int TaskId { get; set; }
-        public DomainTaskStatus NewStatus { get; set; }
+        public TaskItemStatus NewStatus { get; set; }
         public int NewOrder { get; set; }
     }
 }

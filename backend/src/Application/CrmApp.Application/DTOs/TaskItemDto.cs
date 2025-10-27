@@ -1,3 +1,5 @@
+using System;
+
 namespace CrmApp.Application.DTOs
 {
     public class TaskItemDto
@@ -7,5 +9,7 @@ namespace CrmApp.Application.DTOs
         public string? Description { get; set; }
         public bool IsCompleted { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime? DueDate { get; set; }
+        public int Order { get; set; }
     }
 }

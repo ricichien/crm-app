@@ -8,7 +8,7 @@ namespace CrmApp.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize] // <<< protege todos os endpoints deste controller
+    [Authorize] // protege todos os endpoints deste controller
     public class LeadsController : ControllerBase
     {
         private readonly ILeadService _leadService;
@@ -129,6 +129,38 @@ namespace CrmApp.Api.Controllers
                 .Select(s => new { id = (int)s, name = s.ToString() })
                 .ToList();
             return Ok(statuses);
+        }
+
+        // GET: api/leads/{leadId}/tasks
+        [HttpGet("{leadId:int}/tasks")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetTasksByLeadId(int leadId, CancellationToken cancellationToken)
+        {
+            var lead = await _leadService.GetLeadByIdAsync(leadId, cancellationToken);
+            if (lead == null)
+                return NotFound($"Lead {leadId} não encontrado.");
+
+            var tasks = await _leadService.GetTasksByLeadIdAsync(leadId, cancellationToken);
+            return Ok(tasks);
+        }
+
+        // POST: api/leads/{leadId}/tasks
+        [HttpPost("{leadId:int}/tasks")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateTaskForLead(int leadId, [FromBody] TaskItemCreateDto createDto, CancellationToken cancellationToken)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var lead = await _leadService.GetLeadByIdAsync(leadId, cancellationToken);
+            if (lead == null)
+                return NotFound($"Lead {leadId} não encontrado.");
+
+            var task = await _leadService.CreateTaskForLeadAsync(leadId, createDto, cancellationToken);
+            return CreatedAtAction(nameof(GetTasksByLeadId), new { leadId }, task);
         }
     }
 }

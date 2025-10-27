@@ -16,21 +16,3 @@ public class Lead : AuditableEntity
     public string? Notes { get; set; }
     public virtual ICollection<TaskItem> Tasks { get; set; } = new List<TaskItem>();
 }
-
-public enum LeadStatus
-{
-    New,
-    Contacted,
-    Qualified,
-    Unqualified,
-    Customer
-}
-
-public enum LeadSource
-{
-    Website,
-    Referral,
-    SocialMedia,
-    Email,
-    Other
-}

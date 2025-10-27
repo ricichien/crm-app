@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using CrmApp.Application.Interfaces;
 using CrmApp.Application.DTOs;
-using CrmApp.Application.Services; // para UserServiceHelpers (se público)
+using CrmApp.Infrastructure.Services;
 using CrmApp.Domain.Entities;
 using CrmApp.Infrastructure.Services;
 

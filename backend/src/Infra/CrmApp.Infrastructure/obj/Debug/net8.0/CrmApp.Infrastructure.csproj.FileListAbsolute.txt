@@ -1,3 +1,9 @@
+C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\obj\Debug\net8.0\CrmApp.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\obj\Debug\net8.0\CrmApp.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\obj\Debug\net8.0\CrmApp.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\obj\Debug\net8.0\CrmApp.Infrastructure.AssemblyInfo.cs
+C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\obj\Debug\net8.0\CrmApp.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\obj\Debug\net8.0\CrmApp.Infrastructure.sourcelink.json
 C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\bin\Debug\net8.0\CrmApp.Infrastructure.deps.json
 C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\bin\Debug\net8.0\CrmApp.Infrastructure.runtimeconfig.json
 C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\bin\Debug\net8.0\CrmApp.Infrastructure.dll
@@ -6,12 +12,6 @@ C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructur
 C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\bin\Debug\net8.0\CrmApp.Domain.dll
 C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\bin\Debug\net8.0\CrmApp.Application.pdb
 C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\bin\Debug\net8.0\CrmApp.Domain.pdb
-C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\obj\Debug\net8.0\CrmApp.Infrastructure.csproj.AssemblyReference.cache
-C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\obj\Debug\net8.0\CrmApp.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\obj\Debug\net8.0\CrmApp.Infrastructure.AssemblyInfoInputs.cache
-C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\obj\Debug\net8.0\CrmApp.Infrastructure.AssemblyInfo.cs
-C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\obj\Debug\net8.0\CrmApp.Infrastructure.csproj.CoreCompileInputs.cache
-C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\obj\Debug\net8.0\CrmApp.Infrastructure.sourcelink.json
 C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\obj\Debug\net8.0\CrmApp.Infrastructure.csproj.CopyComplete
 C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\obj\Debug\net8.0\CrmApp.Infrastructure.dll
 C:\Users\Usuario\Documents\GitHub\crm-app\backend\src\Infra\CrmApp.Infrastructure\obj\Debug\net8.0\refint\CrmApp.Infrastructure.dll

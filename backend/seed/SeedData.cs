@@ -43,7 +43,7 @@ public static class SeedData
                             Description = "Show enterprise features",
                             DueDate = DateTime.UtcNow.AddDays(2),
                             Priority = TaskPriority.High,
-                            Status = TaskStatus.Pending
+                            Status = TaskItemStatus.Pending
                         }
                     }
                 },
@@ -66,7 +66,7 @@ public static class SeedData
                             Description = "Include case studies",
                             DueDate = DateTime.UtcNow.AddDays(1),
                             Priority = TaskPriority.Medium,
-                            Status = TaskStatus.Pending
+                            Status = TaskItemStatus.Pending
                         }
                     }
                 },
@@ -86,7 +86,7 @@ public static class SeedData
                             Description = "Introduce our services",
                             DueDate = DateTime.UtcNow,
                             Priority = TaskPriority.Low,
-                            Status = TaskStatus.Pending
+                            Status = TaskItemStatus.Pending
                         }
                     }
                 },
@@ -119,7 +119,7 @@ public static class SeedData
                             Description = "Check if needs have changed",
                             DueDate = DateTime.UtcNow.AddMonths(3),
                             Priority = TaskPriority.Low,
-                            Status = TaskStatus.Pending
+                            Status = TaskItemStatus.Pending
                         }
                     }
                 }

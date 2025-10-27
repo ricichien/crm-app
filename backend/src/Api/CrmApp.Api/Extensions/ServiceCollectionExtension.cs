@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using CrmApp.Application.Interfaces;
-using CrmApp.Application.Services;
+using CrmApp.Infrastructure.Services;
 
 namespace CrmApp.Application;
 

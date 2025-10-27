@@ -2,8 +2,10 @@ using AutoMapper;
 using CrmApp.Application.DTOs;
 using CrmApp.Application.Interfaces;
 using CrmApp.Domain.Entities;
+using CrmApp.Infrastructure.Persistence;
+using CrmApp.Infrastructure.Repositories;
 
-namespace CrmApp.Application.Services
+namespace CrmApp.Infrastructure.Services
 {
     public class TaskItemService : ITaskItemService
     {

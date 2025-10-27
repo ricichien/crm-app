@@ -18,6 +18,11 @@ public interface ILeadService
         CancellationToken cancellationToken = default);
 
     Task<bool> DeleteLeadAsync(int Id, CancellationToken cancellationToken = default);
+
+    Task<IEnumerable<TaskItemDto>> GetTasksByLeadIdAsync(int leadId, CancellationToken cancellationToken);
+
+    Task<TaskItemDto> CreateTaskForLeadAsync(int leadId, TaskItemCreateDto createDto, CancellationToken cancellationToken);
+
 }
 
 

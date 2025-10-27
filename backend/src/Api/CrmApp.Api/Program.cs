@@ -9,8 +9,7 @@ using CrmApp.Infrastructure;
 using Serilog;
 using CrmApp.Application.Interfaces;
 using CrmApp.Domain.Entities;      // User entity
-using CrmApp.Infrastructure.Services; // para UserServiceHelpers (deixe público)
-using CrmApp.Application.Services;      // TaskItemService, LeadService
+using CrmApp.Infrastructure.Services; // para UserServiceHelpers (deixe público);      // TaskItemService, LeadService
 using CrmApp.Infrastructure.Repositories; // LeadRepository, TaskItemRepository
 
 var builder = WebApplication.CreateBuilder(args);

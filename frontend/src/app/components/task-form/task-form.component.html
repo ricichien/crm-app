@@ -1,24 +1,82 @@
-<div class="task-form">
-  <h3>{{ task.id ? 'Edit Task' : 'New Task' }}</h3>
+<form [formGroup]="form" (ngSubmit)="save()" class="task-form">
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title" placeholder="Task title" />
+    <mat-error *ngIf="titleControl.hasError('required')">Title is required</mat-error>
+    <mat-error *ngIf="titleControl.hasError('minlength')">Minimum 3 characters</mat-error>
+  </mat-form-field>
 
-  <label>Title</label>
-  <input [(ngModel)]="task.title" placeholder="Task title" />
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description" rows="3"></textarea>
+  </mat-form-field>
 
-  <label>Description</label>
-  <textarea [(ngModel)]="task.description"></textarea>
+  <div class="row two-cols">
+    <mat-form-field appearance="outline">
+      <mat-label>Due date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="dueDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
 
-  <label>Priority</label>
-  <select [(ngModel)]="task.priority">
-    <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
-  </select>
-
-  <label>Status</label>
-  <select [(ngModel)]="task.status">
-    <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
-  </select>
-
-  <div class="buttons">
-    <button (click)="save()">Save</button>
-    <button (click)="cancel()">Cancel</button>
+    <mat-form-field appearance="outline">
+      <mat-label>Priority</mat-label>
+      <mat-select formControlName="priority">
+        <mat-option *ngFor="let p of priorities" [value]="p">{{ p }}</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
-</div>
+
+  <div class="row two-cols">
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let s of statuses" [value]="s">{{ s }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Order</mat-label>
+      <input matInput type="number" formControlName="order" />
+    </mat-form-field>
+  </div>
+
+  <div class="actions">
+    <button mat-stroked-button type="button" (click)="cancel()" [disabled]="loading">Cancel</button>
+
+    <button mat-flat-button color="primary" type="submit" [disabled]="loading || form.invalid">
+      <ng-container *ngIf="!loading">Save</ng-container>
+      <ng-container *ngIf="loading">
+        <mat-progress-spinner diameter="18" mode="indeterminate"></mat-progress-spinner>
+        Saving...
+      </ng-container>
+    </button>
+  </div>
+
+  <div class="error" *ngIf="serverError">{{ serverError }}</div>
+</form>
+
+<style>
+  .task-form {
+    max-width: 720px;
+  }
+  .full {
+    width: 100%;
+  }
+  .two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 12px;
+    align-items: center;
+  }
+  .error {
+    color: #c62828;
+    margin-top: 8px;
+  }
+</style>

@@ -1,0 +1,92 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="lead-form">
+  <div class="row two-cols">
+    <mat-form-field appearance="outline">
+      <mat-label>Primeiro nome</mat-label>
+      <input matInput formControlName="firstName" />
+      <mat-error *ngIf="form.get('firstName')?.hasError('required')"
+        >Primeiro nome é obrigatório</mat-error
+      >
+      <mat-error *ngIf="form.get('firstName')?.hasError('minlength')"
+        >Mínimo 3 caracteres</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Sobrenome</mat-label>
+      <input matInput formControlName="lastName" />
+      <mat-error *ngIf="form.get('lastName')?.hasError('required')"
+        >Sobrenome é obrigatório</mat-error
+      >
+      <mat-error *ngIf="form.get('lastName')?.hasError('minlength')">Mínimo 2 caracteres</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>E-mail</mat-label>
+      <input matInput formControlName="email" />
+      <mat-error *ngIf="form.get('email')?.hasError('required')">E-mail obrigatório</mat-error>
+      <mat-error *ngIf="form.get('email')?.hasError('email')">E-mail inválido</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="row two-cols">
+    <mat-form-field appearance="outline">
+      <mat-label>Telefone</mat-label>
+      <input matInput formControlName="phone" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Empresa</mat-label>
+      <input matInput formControlName="company" />
+    </mat-form-field>
+  </div>
+
+  <div class="row two-cols">
+    <mat-form-field appearance="outline">
+      <mat-label>Cargo</mat-label>
+      <input matInput formControlName="jobTitle" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Origem</mat-label>
+      <mat-select formControlName="source">
+        <mat-option value="Website">Website</mat-option>
+        <mat-option value="Referral">Referral</mat-option>
+        <mat-option value="SocialMedia">SocialMedia</mat-option>
+        <mat-option value="Email">Email</mat-option>
+        <mat-option value="Other">Other</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="row two-cols">
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="New">New</mat-option>
+        <mat-option value="Contacted">Contacted</mat-option>
+        <mat-option value="Qualified">Qualified</mat-option>
+        <mat-option value="Unqualified">Unqualified</mat-option>
+        <mat-option value="Customer">Customer</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Notas</mat-label>
+      <input matInput formControlName="notes" />
+    </mat-form-field>
+  </div>
+
+  <div class="actions">
+    <button mat-button type="button" (click)="router.navigate(['/leads'])" [disabled]="loading">
+      Cancelar
+    </button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="loading">
+      <span *ngIf="!loading">Salvar</span>
+      <span *ngIf="loading">Salvando...</span>
+    </button>
+  </div>
+
+  <div class="error" *ngIf="error">{{ error }}</div>
+</form>
