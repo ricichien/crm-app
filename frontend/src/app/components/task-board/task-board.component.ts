@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { NavbarComponent } from '../../components/navbar/navbar.component';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -11,6 +10,7 @@ import {
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { TaskService } from '../../core/services/task.service';
 import { Task, TaskStatus } from '../../core/models/task.model';
 import { TaskFormDialogComponent } from '../task-form-dialog/task-form-dialog.component';
@@ -27,10 +27,9 @@ import { TaskFormDialogComponent } from '../task-form-dialog/task-form-dialog.co
     NavbarComponent,
   ],
   templateUrl: './task-board.component.html',
-  styleUrls: ['./task-board.component.scss'], // estou usando scss como pediu
+  styleUrls: ['./task-board.component.scss'],
 })
 export class TaskBoardComponent implements OnInit {
-  // agora um mapa indexado por string para evitar erros de template-checking
   tasksByStatus: Record<string, Task[]> = {
     [TaskStatus.Pending]: [],
     [TaskStatus.InProgress]: [],
@@ -39,7 +38,6 @@ export class TaskBoardComponent implements OnInit {
     [TaskStatus.Cancelled]: [],
   };
 
-  // continua sendo um array de enums (ordem das colunas)
   statuses: TaskStatus[] = [
     TaskStatus.Pending,
     TaskStatus.InProgress,
@@ -48,20 +46,13 @@ export class TaskBoardComponent implements OnInit {
     TaskStatus.Cancelled,
   ];
 
-  // lista de ids (strings) usada pelos drop lists — garante consistência
   dropListIds: string[] = [];
 
   loading = false;
   errorMsg = '';
-
-  // flag para distinguir drag de click
   private _isDragging = false;
-  public get isDragging(): boolean {
-    return this._isDragging;
-  }
 
   constructor(private taskService: TaskService, private dialog: MatDialog, private router: Router) {
-    // build dropListIds a partir dos statuses (string)
     this.dropListIds = this.statuses.map((s) => String(s));
   }
 
@@ -73,7 +64,6 @@ export class TaskBoardComponent implements OnInit {
     return String(status);
   }
 
-  // retorna ids conectados para uma lista (todos exceto self)
   connectedTo(status: TaskStatus): string[] {
     const id = String(status);
     return this.dropListIds.filter((x) => x !== id);
@@ -83,7 +73,6 @@ export class TaskBoardComponent implements OnInit {
     this.loading = true;
     this.taskService.getTasks().subscribe({
       next: (tasks: Task[]) => {
-        // clear buckets
         for (const s of this.statuses) {
           this.tasksByStatus[String(s)] = [];
         }
@@ -94,7 +83,6 @@ export class TaskBoardComponent implements OnInit {
           this.tasksByStatus[st].push(t);
         }
 
-        // sort: undefined order -> goes to end
         for (const s of this.statuses) {
           const key = String(s);
           this.tasksByStatus[key].sort(
@@ -123,40 +111,34 @@ export class TaskBoardComponent implements OnInit {
       );
     }
 
-    // update orders locally and send to backend
     const column = event.container.data;
     column.forEach((t: Task, idx: number) => {
       t.order = idx;
       t.status = status as any;
-      // call API to persist each moved item (use 0 as fallback)
+
       this.taskService.moveTask(t.id, t.status, t.order ?? 0).subscribe({
-        next: () => {},
-        error: (err) => {
-          console.error('move error', err);
-          // optional: reload to revert if necessary
-          // this.loadTasks();
-        },
+        error: (err) => console.error('move error', err),
       });
     });
   }
 
-  // ---- drag / click helpers ----
   onDragStarted(): void {
     this._isDragging = true;
   }
 
   onDragEnded(): void {
-    // short timeout to avoid click immediately after drag triggering open
     setTimeout(() => (this._isDragging = false), 50);
   }
 
-  // card click: ignore if we were dragging
+  get isDragging(): boolean {
+    return this._isDragging;
+  }
+
   onCardClick(task: Task): void {
     if (this.isDragging) return;
     this.openEditDialog(task);
   }
 
-  // ---- dialogs ----
   openCreateDialog(): void {
     const ref = this.dialog.open(TaskFormDialogComponent, {
       width: '720px',
@@ -181,5 +163,15 @@ export class TaskBoardComponent implements OnInit {
     ref.afterClosed().subscribe((result) => {
       if (result) this.loadTasks();
     });
+  }
+
+  avatarInitials(name?: string | null): string {
+    if (!name) return '';
+    const parts = name.trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return '';
+    if (parts.length === 1) return parts[0].substring(0, 1).toUpperCase();
+    const first = parts[0].substring(0, 1).toUpperCase();
+    const last = parts[parts.length - 1].substring(0, 1).toUpperCase();
+    return `${first}${last}`;
   }
 }

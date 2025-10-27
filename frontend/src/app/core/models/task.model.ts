@@ -25,6 +25,10 @@ export interface Task {
   createdAt?: string;
   lastModifiedAt?: string;
   lead?: any;
+  isUrgent?: boolean;
+  leadName?: string;
+  leadAvatarUrl?: string;
+  price?: number;
 }
 
 /** DTOs usados para criar / atualizar */

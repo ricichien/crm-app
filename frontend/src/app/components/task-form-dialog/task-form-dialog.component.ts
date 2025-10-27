@@ -1,33 +1,84 @@
-.task-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+import { Component, Inject, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { TaskFormComponent } from '../task-form/task-form.component';
+import { Task } from '../../core/models/task.model';
 
-  .row {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
+@Component({
+  selector: 'app-task-form-dialog',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDividerModule,
+    TaskFormComponent,
+  ],
+  template: `
+    <div class="dialog-root">
+      <div class="dialog-header">
+        <div class="title">
+          <h2>{{ data.task ? 'Edit Task' : 'New Task' }}</h2>
+          <p class="subtitle" *ngIf="data.leadId">Lead: {{ data.leadId }}</p>
+        </div>
+        <button mat-icon-button aria-label="Close" (click)="close()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
 
-    &.two-cols {
-      > mat-form-field {
-        flex: 1 1 0;
-      }
-    }
+      <mat-divider></mat-divider>
 
-    .full {
-      width: 100%;
-    }
+      <mat-dialog-content>
+        <app-task-form
+          #taskForm
+          [task]="data.task"
+          [leadId]="data.leadId"
+          (saved)="onSaved($event)"
+          (cancelled)="onCancelled()"
+        ></app-task-form>
+      </mat-dialog-content>
+
+      <mat-divider></mat-divider>
+
+      <mat-dialog-actions align="end" class="dialog-actions">
+        <button mat-stroked-button (click)="onCancelClick()" type="button">Cancel</button>
+        <button mat-flat-button color="primary" (click)="onSaveClick()" type="button">Save</button>
+      </mat-dialog-actions>
+    </div>
+  `,
+  styleUrls: ['./task-form-dialog.component.scss'],
+})
+export class TaskFormDialogComponent {
+  @ViewChild('taskForm') taskForm?: TaskFormComponent;
+
+  constructor(
+    private dialogRef: MatDialogRef<TaskFormDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { leadId?: string; task?: Task }
+  ) {}
+
+  onSaved(result: Task | null) {
+    this.dialogRef.close(result);
   }
 
-  .form-hint {
-    color: #c2410c;
-    font-size: 0.85rem;
+  onCancelled() {
+    this.dialogRef.close(null);
   }
-}
 
-/* small responsive tweak */
-@media (max-width: 720px) {
-  .task-form .row {
-    flex-direction: column;
+  close() {
+    this.dialogRef.close(null);
+  }
+
+  /** ⬇️ CHAMA O MÉTODO CORRETO */
+  onSaveClick(): void {
+    this.taskForm?.save();
+  }
+
+  onCancelClick(): void {
+    this.taskForm?.cancel();
+    this.dialogRef.close(null);
   }
 }
