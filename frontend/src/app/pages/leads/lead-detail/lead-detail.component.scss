@@ -1,70 +1,53 @@
-:root {
-  --navbar-height: 64px;
-}
-
-.page-container {
-  padding-top: calc(var(--navbar-height) + 16px);
-  background: #f7f8fb; /* subtle BG, card sections are white */
-  min-height: 100vh;
-  padding-left: 16px;
-  padding-right: 16px;
-  display: flex;
-  justify-content: center;
-}
-
 .lead-detail {
   width: 100%;
   max-width: 1100px;
-  margin-bottom: 48px;
+  margin: 0 auto 48px;
 
-  .card {
-    background: #ffffff;
-    border-radius: 10px;
-    padding: 16px;
-    box-shadow: 0 6px 18px rgba(13, 38, 59, 0.04);
-    margin-bottom: 16px;
+  .card,
+  .lead-form {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--surface-shadow);
+    border: 1px solid rgba(15, 23, 42, 0.04);
   }
 
   h3 {
-    margin-top: 0;
-    margin-bottom: 12px;
+    margin: 0 0 12px 0;
+    font-size: 1.125rem;
   }
 
-  form {
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .full {
-      width: 100%;
-      margin-top: 12px;
-    }
-
-    .selects {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 16px;
-    }
+  /* FORM LAYOUT */
+  form.lead-form-inline {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 
-  hr {
-    border: none;
-    height: 1px;
-    background: transparent;
-    margin: 16px 0;
+  /* two-cols == duas colunas responsivas */
+  .two-cols {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
+  /* full width fields */
+  mat-form-field {
+    width: 100%;
+  }
+
+  /* actions (buttons) alinhados à direita */
+  .actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 6px;
+  }
+
+  /* TASKS */
   .lead-tasks {
+    margin-top: 18px;
+
     .tasks-header {
       display: flex;
       justify-content: space-between;
@@ -72,44 +55,40 @@
       margin-bottom: 12px;
     }
 
-    .tasks-loading {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      color: #6b7280;
-    }
-
-    .empty {
-      color: #6b7280;
-      padding: 12px 0;
-    }
-
     .tasks-list {
+      display: grid;
+      gap: 8px;
+
       .task-row {
-        padding: 10px;
+        background: #fbfdff;
         border-radius: 8px;
-        transition: background 0.12s ease;
+        padding: 12px;
+        transition: transform 0.08s ease, box-shadow 0.08s ease;
+        border: 1px solid rgba(15, 23, 42, 0.03);
+
         &:hover {
-          background: #fbfdff;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
         }
 
         .task-main {
           display: flex;
           justify-content: space-between;
-          align-items: center;
           gap: 12px;
+          align-items: center;
+
+          .task-info {
+            display: flex;
+            flex-direction: column;
+          }
 
           .task-title {
             font-weight: 600;
           }
           .task-meta {
             font-size: 12px;
-            color: #666;
-            margin-top: 4px;
-          }
-
-          .task-actions button {
-            opacity: 0.85;
+            color: var(--muted);
+            margin-top: 3px;
           }
         }
       }
@@ -117,21 +96,50 @@
 
     .task-form-wrap {
       margin-top: 12px;
-      background: #fff;
-      padding: 12px;
+      background: var(--card-bg);
+      padding: 14px;
       border-radius: 8px;
+      border: 1px solid rgba(15, 23, 42, 0.03);
+    }
+
+    .empty {
+      color: var(--muted);
+      padding: 12px 0;
+    }
+  }
+
+  /* small screens */
+  @media (max-width: 720px) {
+    .two-cols {
+      grid-template-columns: 1fr;
     }
   }
 }
 
-/* small screens */
-@media (max-width: 720px) {
-  .lead-detail form .row,
-  .lead-detail form .selects {
-    grid-template-columns: 1fr;
-  }
+/* Dialog panel styles (panelClass: 'task-dialog-panel') */
+.task-dialog-panel .mat-dialog-container {
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(2, 6, 23, 0.5);
+}
 
-  .app-navbar .nav-inner {
-    padding: 0 12px;
-  }
+/* Dialog header inside the dialog content (put a header element inside your dialog template) */
+.task-dialog-panel .dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  background: #fff;
+}
+
+.task-dialog-panel .dialog-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
 }

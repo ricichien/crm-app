@@ -1,3 +1,99 @@
+// @import '@angular/material/prebuilt-themes/azure-blue.css';
+// @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+// html,
+// body * {
+//   font-family: 'Inter', Roboto, sans-serif;
+// }
+
+// html,
+// body,
+// app-root {
+//   height: 100%;
+//   margin: 0;
+//   padding: 0;
+//   background: #f3f4f6;
+// }
+
+// .task-dialog-panel {
+//   display: flex !important;
+//   align-items: center !important;
+//   justify-content: center !important;
+//   padding: 0 !important;
+//   box-sizing: border-box !important;
+// }
+
+// .task-dialog-panel .mat-dialog-container {
+//   padding: 0 !important;
+//   overflow: visible !important;
+//   background: transparent !important;
+//   box-shadow: none !important;
+// }
+
+// .task-dialog-panel .dialog-root {
+//   width: 100%;
+//   max-width: 720px;
+//   margin: 0;
+//   background: #fff;
+//   border-radius: 8px;
+//   box-shadow: 0 6px 18px rgba(15, 23, 36, 0.06);
+//   display: flex;
+//   flex-direction: column;
+//   overflow: hidden;
+// }
+
+// .task-dialog-panel mat-dialog-content {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   padding: 16px 32px;
+// }
+
+// .task-dialog-panel app-task-form {
+//   width: 100%;
+//   max-width: 520px;
+// }
+
+// *:focus {
+//   outline: none;
+// }
+
+// :root {
+//   --sidebar-bg: #2b2b2b;
+//   --sidebar-bg-accent: #878788;
+//   --sidebar-text: #adadad;
+//   --sidebar-muted: #dfdfdf;
+//   --sidebar-active: #5c5c5c;
+//   --sidebar-hover: rgba(146, 146, 146, 0.05);
+// }
+
+// .task-dialog-panel .mat-dialog-container {
+//   border-radius: 8px;
+//   padding: 0;
+//   max-width: 720px;
+// }
+
+// .task-dialog-panel .close-btn {
+//   position: absolute;
+//   right: 8px;
+//   top: 8px;
+// }
+
+// .cdk-overlay-backdrop {
+//   background-color: rgba(0, 0, 0, 0.6) !important;
+// }
+
+// .app-root {
+//   min-height: 100vh;
+//   display: flex;
+// }
+
+// .main-area {
+//   flex: 1;
+//   padding: 16px;
+// }
+
+/* src/styles.scss - global styles */
 @import '@angular/material/prebuilt-themes/azure-blue.css';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
@@ -43,10 +139,7 @@ app-root {
 }
 
 .task-dialog-panel mat-dialog-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 16px 32px;
+  padding: 16px 24px;
 }
 
 .task-dialog-panel app-task-form {
@@ -67,16 +160,10 @@ app-root {
   --sidebar-hover: rgba(146, 146, 146, 0.05);
 }
 
-.task-dialog-panel .mat-dialog-container {
-  border-radius: 8px;
-  padding: 0;
-  max-width: 720px;
-}
-
 .task-dialog-panel .close-btn {
-  position: absolute;
-  right: 8px;
-  top: 8px;
+  position: relative;
+  right: 0;
+  top: 0;
 }
 
 .cdk-overlay-backdrop {
@@ -91,4 +178,104 @@ app-root {
 .main-area {
   flex: 1;
   padding: 16px;
+}
+
+:root {
+  --navbar-height: 64px;
+  --page-bg: linear-gradient(180deg, #f7f9fc 0%, #f2f6fa 100%);
+  --card-bg: #ffffff;
+  --muted: #6b7280;
+  --surface-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  --radius: 10px;
+}
+
+.page-container {
+  padding-top: calc(var(--navbar-height) + 20px);
+  background: var(--page-bg);
+  min-height: 100vh;
+  padding-left: 16px;
+  padding-right: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.container-max {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.card {
+  width: 100%;
+  max-width: 920px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--surface-shadow);
+  border: 1px solid rgba(15, 23, 42, 0.04);
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.lead-form-inline {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+}
+
+.two-cols {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 720px) {
+  .two-cols {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tasks-list {
+  width: 100%;
+  display: grid;
+  gap: 8px;
+}
+
+.task-row {
+  background: #fbfdff;
+  border-radius: 8px;
+  padding: 12px;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+  border: 1px solid rgba(15, 23, 42, 0.03);
+}
+.task-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+.dialog-header .header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.dialog-header .header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }

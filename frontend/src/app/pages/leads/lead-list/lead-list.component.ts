@@ -18,6 +18,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatChipsModule } from '@angular/material/chips';
 import { NavbarComponent } from '@app/components/navbar/navbar.component';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { finalize } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-leads-list',
@@ -57,7 +60,12 @@ export class LeadsListComponent implements OnInit, OnDestroy {
   totalPages = 1;
   totalCount = 0;
 
-  constructor(private leadService: LeadService, private router: Router) {}
+  constructor(
+    private leadService: LeadService,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.load();
@@ -125,7 +133,36 @@ export class LeadsListComponent implements OnInit, OnDestroy {
       });
   }
 
-  // navegação
+  deleteLead(lead: Lead, event?: MouseEvent) {
+    if (event) {
+      event.stopPropagation();
+    }
+
+    if (!lead?.id) return;
+
+    const confirmed = confirm(`Delete lead "${lead.firstName} ${lead.lastName}"?`);
+    if (!confirmed) return;
+    this.loading = true;
+
+    this.leadService
+      .deleteLead(lead.id)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: () => {
+          // remove da lista local
+          this.leads = (this.leads || []).filter((l) => l.id !== lead.id);
+          this.totalCount = Math.max(0, (this.totalCount || 1) - 1);
+
+          // feedback visual
+          this.snackBar.open('Lead removed', 'Close', { duration: 3000 });
+        },
+        error: (err) => {
+          console.error('Error deleting lead', err);
+          this.snackBar.open('Error deleting lead', 'Close', { duration: 4000 });
+        },
+      });
+  }
+
   newLead() {
     this.router.navigate(['/leads', 'new']);
   }
@@ -139,7 +176,6 @@ export class LeadsListComponent implements OnInit, OnDestroy {
     this.router.navigate(['/leads', lead.id]);
   }
 
-  // helpers
   getInitials(lead: Lead): string {
     const fn = (lead.firstName || '').trim();
     const ln = (lead.lastName || '').trim();
@@ -149,9 +185,7 @@ export class LeadsListComponent implements OnInit, OnDestroy {
     return '?';
   }
 
-  // evita acessar propriedade que pode não existir no seu model
   getJobTitle(lead: Lead): string {
-    // procura por campos comuns sem quebrar a tipagem
     return (
       ((lead as any).title as string) ??
       ((lead as any).jobTitle as string) ??

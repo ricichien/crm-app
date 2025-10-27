@@ -1,7 +1,6 @@
 <app-navbar></app-navbar>
 
 <div class="leads-page">
-  <!-- Header com filtros e botão -->
   <div class="leads-header">
     <div class="left">
       <h2>Leads</h2>
@@ -26,64 +25,111 @@
     </div>
   </div>
 
-  <!-- Loading -->
   <div *ngIf="loading" class="center">
     <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
   </div>
 
-  <!-- Tabela -->
   <div *ngIf="!loading && leads?.length" class="table-wrap">
-    <table class="leads-table" role="table" aria-label="Leads list">
-      <thead>
-        <tr>
-          <th class="col-name">Name</th>
-          <th class="col-company">Company</th>
-          <th class="col-email">Email</th>
-          <th class="col-title">Title</th>
-          <th class="col-status">Status</th>
-          <th class="col-actions" aria-hidden="true"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let lead of leads; trackBy: trackById" (click)="openDetail(lead)" tabindex="0">
-          <td class="col-name">
-            <div class="cell-left">
-              <div class="avatar">{{ getInitials(lead) }}</div>
-              <div class="name-block">
-                <div class="name">{{ lead.firstName }} {{ lead.lastName }}</div>
-                <div class="sub-email">{{ lead.email }}</div>
+    <div *ngIf="!loading && leads?.length" class="table-wrap">
+      <table class="leads-table" role="table" aria-label="Leads list">
+        <thead>
+          <tr>
+            <th class="col-name">Name</th>
+            <th class="col-company">Company</th>
+            <th class="col-email">Email</th>
+            <th class="col-phone">Phone</th>
+            <th class="col-source">Source</th>
+            <th class="col-created">Created</th>
+            <th class="col-notes">Notes</th>
+            <th class="col-status">Status</th>
+            <th class="col-actions" aria-hidden="true"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr
+            *ngFor="let lead of leads; trackBy: trackById"
+            (click)="openDetail(lead)"
+            tabindex="0"
+            class="lead-row"
+          >
+            <td class="col-name">
+              <div class="cell-left">
+                <div class="avatar">{{ getInitials(lead) }}</div>
+                <div class="name-block">
+                  <div class="name">{{ lead.firstName }} {{ lead.lastName }}</div>
+                  <div class="sub-email">{{ lead.email }}</div>
+                </div>
               </div>
-            </div>
-          </td>
-          <td class="col-company">{{ lead.company }}</td>
-          <td class="col-email-cell">{{ lead.email }}</td>
-          <td class="col-title">{{ getJobTitle(lead) }}</td>
-          <td class="col-status">
-            <mat-chip class="status-chip" [attr.data-status]="lead.status?.toLowerCase() || ''">
-              {{ lead.status || 'Unknown' }}
-            </mat-chip>
-          </td>
-          <td class="col-actions" (click)="$event.stopPropagation()">
-            <button
-              mat-icon-button
-              (click)="edit(lead, $event)"
-              matTooltip="Edit"
-              aria-label="Edit lead"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              (click)="openDetail(lead)"
-              matTooltip="Open"
-              aria-label="Open lead"
-            >
-              <mat-icon>open_in_new</mat-icon>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            </td>
+
+            <td class="col-company">{{ lead.company || '—' }}</td>
+
+            <td class="col-email-cell">
+              <a href="mailto:{{ lead.email }}" (click)="$event.stopPropagation()">{{
+                lead.email
+              }}</a>
+            </td>
+
+            <td class="col-phone">{{ lead.phone || '—' }}</td>
+
+            <td class="col-source">{{ lead.source || '—' }}</td>
+
+            <td class="col-created">
+              {{ lead.createdAt ? (lead.createdAt | date : 'short') : '—' }}
+            </td>
+
+            <td class="col-notes">
+              <span
+                class="notes-truncate"
+                *ngIf="lead.notes; else noNotes"
+                matTooltip="{{ lead.notes }}"
+                matTooltipPosition="above"
+                (click)="$event.stopPropagation()"
+                >{{ lead.notes | slice : 0 : 60 }}{{ lead.notes.length > 60 ? '…' : '' }}</span
+              >
+              <ng-template #noNotes>—</ng-template>
+            </td>
+
+            <td class="col-status">
+              <mat-chip class="status-chip" [attr.data-status]="(lead.status || '').toLowerCase()">
+                {{ lead.status || 'Unknown' }}
+              </mat-chip>
+            </td>
+
+            <td class="col-actions" (click)="$event.stopPropagation()">
+              <button
+                mat-icon-button
+                (click)="edit(lead, $event)"
+                matTooltip="Edit"
+                aria-label="Edit lead"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <button
+                mat-icon-button
+                (click)="openDetail(lead); $event.stopPropagation()"
+                matTooltip="Open"
+                aria-label="Open lead"
+              >
+                <mat-icon>open_in_new</mat-icon>
+              </button>
+
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="deleteLead(lead, $event)"
+                matTooltip="Delete"
+                aria-label="Delete lead"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <!-- Empty/Error -->

@@ -34,6 +34,13 @@
         <span class="label" *ngIf="isExpanded">{{ item.label }}</span>
       </a>
     </li>
+
+    <li role="none" class="menu-item logout-item">
+      <button type="button" class="menu-link logout-btn" (click)="logout()" title="Sair">
+        <mat-icon class="icon" aria-hidden="true">logout</mat-icon>
+        <span class="label" *ngIf="isExpanded">Logout</span>
+      </button>
+    </li>
   </ul>
 
   <div class="bottom-note" *ngIf="isExpanded">

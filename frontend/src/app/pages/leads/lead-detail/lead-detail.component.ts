@@ -54,206 +54,335 @@ import { NavbarComponent } from '@app/components/navbar/navbar.component';
   ],
   template: `
     <app-navbar></app-navbar>
-    <div class="lead-detail">
-      <div class="lead-form">
-        <h3>{{ isEditMode ? 'Edit Lead' : 'New Lead' }}</h3>
 
-        <!-- Edit mode: reuse the reusable app-lead-form component -->
-        <app-lead-form
-          *ngIf="isEditMode && lead"
-          [lead]="lead"
-          mode="edit"
-          (saved)="onLeadSaved($event)"
-        ></app-lead-form>
+    <div class="page-container">
+      <div class="container-max lead-detail">
+        <section class="card lead-form-card">
+          <h3>{{ isEditMode ? 'Edit Lead' : 'New Lead' }}</h3>
 
-        <!-- Create mode: inline form (quando não existe componente create separado) -->
-        <ng-template #createBlock>
-          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="lead-form-inline">
-            <div class="row two-cols">
-              <mat-form-field appearance="outline">
-                <mat-label>Primeiro nome</mat-label>
-                <input matInput formControlName="firstName" />
-                <mat-error *ngIf="form.get('firstName')?.hasError('required')"
-                  >Primeiro nome é obrigatório</mat-error
-                >
-                <mat-error *ngIf="form.get('firstName')?.hasError('minlength')"
-                  >Mínimo 3 caracteres</mat-error
-                >
-              </mat-form-field>
+          <!-- Edit mode: reuse the reusable app-lead-form component -->
+          <app-lead-form
+            *ngIf="isEditMode && lead"
+            [lead]="lead"
+            mode="edit"
+            (saved)="onLeadSaved($event)"
+          ></app-lead-form>
 
-              <mat-form-field appearance="outline">
-                <mat-label>Sobrenome</mat-label>
-                <input matInput formControlName="lastName" />
-                <mat-error *ngIf="form.get('lastName')?.hasError('required')"
-                  >Sobrenome é obrigatório</mat-error
-                >
-                <mat-error *ngIf="form.get('lastName')?.hasError('minlength')"
-                  >Mínimo 2 caracteres</mat-error
-                >
-              </mat-form-field>
-            </div>
+          <!-- Create mode: inline form -->
+          <ng-container *ngIf="!isEditMode">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="lead-form-inline">
+              <div class="two-cols">
+                <mat-form-field appearance="outline">
+                  <mat-label>Primeiro nome</mat-label>
+                  <input matInput formControlName="firstName" />
+                  <mat-error *ngIf="form.get('firstName')?.hasError('required')"
+                    >Primeiro nome é obrigatório</mat-error
+                  >
+                  <mat-error *ngIf="form.get('firstName')?.hasError('minlength')"
+                    >Mínimo 3 caracteres</mat-error
+                  >
+                </mat-form-field>
 
-            <div class="row">
-              <mat-form-field appearance="outline" class="full">
-                <mat-label>E-mail</mat-label>
-                <input matInput formControlName="email" />
-                <mat-error *ngIf="form.get('email')?.hasError('required')"
-                  >E-mail obrigatório</mat-error
-                >
-                <mat-error *ngIf="form.get('email')?.hasError('email')">E-mail inválido</mat-error>
-              </mat-form-field>
-            </div>
-
-            <div class="row two-cols">
-              <mat-form-field appearance="outline">
-                <mat-label>Telefone</mat-label>
-                <input matInput formControlName="phone" />
-              </mat-form-field>
-
-              <mat-form-field appearance="outline">
-                <mat-label>Empresa</mat-label>
-                <input matInput formControlName="company" />
-              </mat-form-field>
-            </div>
-
-            <div class="row two-cols">
-              <mat-form-field appearance="outline">
-                <mat-label>Cargo</mat-label>
-                <input matInput formControlName="jobTitle" />
-              </mat-form-field>
-
-              <mat-form-field appearance="outline">
-                <mat-label>Origem</mat-label>
-                <mat-select formControlName="source">
-                  <mat-option *ngFor="let s of leadSources" [value]="s.value">{{
-                    s.label
-                  }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-
-            <div class="row two-cols">
-              <mat-form-field appearance="outline">
-                <mat-label>Status</mat-label>
-                <mat-select formControlName="status">
-                  <mat-option *ngFor="let s of leadStatuses" [value]="s.value">{{
-                    s.label
-                  }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-              <mat-form-field appearance="outline">
-                <mat-label>Notas</mat-label>
-                <input matInput formControlName="notes" />
-              </mat-form-field>
-            </div>
-
-            <div class="actions">
-              <button mat-button type="button" (click)="close()" [disabled]="isSubmitting">
-                Cancelar
-              </button>
-              <button mat-flat-button color="primary" type="submit" [disabled]="isSubmitting">
-                <span *ngIf="!isSubmitting">Salvar</span>
-                <span *ngIf="isSubmitting">Salvando...</span>
-              </button>
-            </div>
-
-            <div class="error" *ngIf="error">{{ error }}</div>
-          </form>
-        </ng-template>
-
-        <!-- render createBlock when not edit mode -->
-        <ng-container *ngIf="!isEditMode">
-          <ng-container *ngTemplateOutlet="createBlock"></ng-container>
-        </ng-container>
-      </div>
-
-      <hr />
-
-      <div class="lead-tasks">
-        <div style="display: flex; justify-content: space-between; align-items: center">
-          <h4>Tasks</h4>
-          <button mat-flat-button color="primary" (click)="openAddTask()">+ Add Task</button>
-        </div>
-
-        <div *ngIf="tasksLoading">Loading tasks...</div>
-
-        <div *ngIf="!tasksLoading && tasks.length === 0" class="empty">No tasks for this lead.</div>
-
-        <div *ngIf="!tasksLoading && tasks.length > 0" class="tasks-list">
-          <div
-            *ngFor="let t of tasks"
-            class="task-row"
-            style="padding: 8px; border-bottom: 1px solid #eee"
-          >
-            <div style="display: flex; justify-content: space-between; align-items: center">
-              <div>
-                <div style="font-weight: 600">{{ t.title }}</div>
-                <div style="font-size: 12px; color: #666">
-                  {{ t.dueDate | date : 'shortDate' }} • {{ t.priority }}
-                </div>
+                <mat-form-field appearance="outline">
+                  <mat-label>Sobrenome</mat-label>
+                  <input matInput formControlName="lastName" />
+                  <mat-error *ngIf="form.get('lastName')?.hasError('required')"
+                    >Sobrenome é obrigatório</mat-error
+                  >
+                  <mat-error *ngIf="form.get('lastName')?.hasError('minlength')"
+                    >Mínimo 2 caracteres</mat-error
+                  >
+                </mat-form-field>
               </div>
+
               <div>
-                <button mat-icon-button color="primary" (click)="editTask(t)">
-                  <mat-icon>edit</mat-icon>
+                <mat-form-field appearance="outline" class="full">
+                  <mat-label>E-mail</mat-label>
+                  <input matInput formControlName="email" />
+                  <mat-error *ngIf="form.get('email')?.hasError('required')"
+                    >E-mail obrigatório</mat-error
+                  >
+                  <mat-error *ngIf="form.get('email')?.hasError('email')"
+                    >E-mail inválido</mat-error
+                  >
+                </mat-form-field>
+              </div>
+
+              <div class="two-cols">
+                <mat-form-field appearance="outline">
+                  <mat-label>Telefone</mat-label>
+                  <input matInput formControlName="phone" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Empresa</mat-label>
+                  <input matInput formControlName="company" />
+                </mat-form-field>
+              </div>
+
+              <div class="two-cols">
+                <mat-form-field appearance="outline">
+                  <mat-label>Cargo</mat-label>
+                  <input matInput formControlName="jobTitle" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Origem</mat-label>
+                  <mat-select formControlName="source">
+                    <mat-option *ngFor="let s of leadSources" [value]="s.value">{{
+                      s.label
+                    }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="two-cols">
+                <mat-form-field appearance="outline">
+                  <mat-label>Status</mat-label>
+                  <mat-select formControlName="status">
+                    <mat-option *ngFor="let s of leadStatuses" [value]="s.value">{{
+                      s.label
+                    }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Notas</mat-label>
+                  <input matInput formControlName="notes" />
+                </mat-form-field>
+              </div>
+
+              <div class="actions">
+                <button mat-button type="button" (click)="close()" [disabled]="isSubmitting">
+                  Cancelar
                 </button>
-                <button mat-icon-button color="warn" (click)="deleteTask(t)">
-                  <mat-icon>delete</mat-icon>
+                <button mat-flat-button color="primary" type="submit" [disabled]="isSubmitting">
+                  <span *ngIf="!isSubmitting">Salvar</span>
+                  <span *ngIf="isSubmitting">Salvando...</span>
                 </button>
+              </div>
+
+              <div class="error" *ngIf="error">{{ error }}</div>
+            </form>
+          </ng-container>
+        </section>
+
+        <hr class="section-sep" />
+
+        <section class="card lead-tasks">
+          <div class="tasks-header">
+            <h4>Tasks</h4>
+            <button mat-flat-button color="primary" (click)="openAddTask()">+ Add Task</button>
+          </div>
+
+          <div *ngIf="tasksLoading" class="tasks-loading">
+            <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
+            <span>Loading tasks...</span>
+          </div>
+
+          <div *ngIf="!tasksLoading && tasks.length === 0" class="empty">
+            No tasks for this lead.
+          </div>
+
+          <div *ngIf="!tasksLoading && tasks.length > 0" class="tasks-list">
+            <div *ngFor="let t of tasks" class="task-row">
+              <div class="task-main">
+                <div class="task-info">
+                  <div class="task-title">{{ t.title }}</div>
+                  <div class="task-meta">
+                    {{ t.dueDate | date : 'shortDate' }} • {{ t.priority }}
+                  </div>
+                </div>
+
+                <div class="task-actions">
+                  <button mat-icon-button color="primary" (click)="editTask(t)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="deleteTask(t)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div
-          *ngIf="showTaskForm"
-          style="margin-top: 12px; background: #fff; padding: 12px; border-radius: 8px"
-        >
-          <app-task-form
-            [task]="editingTask"
-            [leadId]="leadId"
-            (saved)="onTaskSaved($event)"
-            (cancelled)="onTaskCancelled()"
-          ></app-task-form>
-        </div>
+          <div *ngIf="showTaskForm" class="task-form-wrap">
+            <app-task-form
+              [task]="editingTask"
+              [leadId]="leadId"
+              (saved)="onTaskSaved($event)"
+              (cancelled)="onTaskCancelled()"
+            ></app-task-form>
+          </div>
+        </section>
       </div>
     </div>
   `,
   styles: [
     `
+      :host {
+        display: block;
+      }
+
+      /* container card */
       .lead-detail {
-        max-width: 920px;
-        margin: 0 auto;
+        width: 100%;
       }
-      .lead-form {
-        padding: 12px;
-        background: #f7f9fc;
-        border-radius: 8px;
+
+      .lead-form-card {
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        padding: 20px;
+        box-shadow: var(--surface-shadow);
+        border: 1px solid rgba(15, 23, 42, 0.04);
+        margin-bottom: 18px;
       }
-      .lead-form-inline .row {
-        display: flex;
+
+      h3 {
+        margin: 0 0 12px 0;
+        font-size: 1.125rem;
+      }
+
+      /* form layout */
+      .lead-form-inline {
+        display: block;
+      }
+      .two-cols {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         gap: 12px;
         margin-bottom: 12px;
-      }
-      .two-cols mat-form-field {
-        flex: 1;
       }
       .full {
         width: 100%;
       }
+
+      mat-form-field {
+        width: 100%;
+      }
+
       .actions {
         display: flex;
-        gap: 8px;
+        gap: 12px;
         justify-content: flex-end;
-        margin-top: 12px;
+        margin-top: 8px;
       }
+
+      /* separator */
+      .section-sep {
+        border: none;
+        height: 1px;
+        background: transparent;
+        margin: 18px 0;
+      }
+
+      /* tasks */
       .lead-tasks {
-        margin-top: 16px;
+        margin-top: 8px;
+        padding: 16px;
+        border-radius: var(--radius);
+        background: var(--card-bg);
+        box-shadow: var(--surface-shadow);
+        border: 1px solid rgba(15, 23, 42, 0.03);
       }
-      .tasks-list .task-row {
+
+      .tasks-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .tasks-loading {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        color: var(--muted);
+      }
+
+      .empty {
+        color: var(--muted);
+        padding: 12px 0;
+      }
+
+      .tasks-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .task-row {
+        background: #fbfdff;
+        border-radius: 8px;
+        padding: 12px;
+        transition: transform 0.08s ease, box-shadow 0.08s ease;
+        border: 1px solid rgba(15, 23, 42, 0.03);
+      }
+      .task-row:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+      }
+
+      .task-main {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+      .task-info {
+        display: flex;
+        flex-direction: column;
+      }
+      .task-title {
+        font-weight: 600;
+      }
+      .task-meta {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+
+      .task-actions button {
+        opacity: 0.95;
+      }
+
+      .task-form-wrap {
+        margin-top: 12px;
+        background: var(--card-bg);
+        padding: 14px;
+        border-radius: 8px;
+        border: 1px solid rgba(15, 23, 42, 0.03);
+      }
+
+      /* responsive */
+      @media (max-width: 720px) {
+        .two-cols {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* dialog panel class (must be applied as panelClass when opening dialog) */
+      .task-dialog-panel .mat-dialog-container {
+        padding: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 16px 48px rgba(2, 6, 23, 0.5);
+      }
+      .task-dialog-panel .dialog-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.06);
         background: #fff;
-        border-radius: 6px;
-        margin-bottom: 6px;
+      }
+      .task-dialog-panel .dialog-close {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
       }
     `,
   ],
@@ -348,7 +477,6 @@ export class LeadDetailComponent implements OnInit, OnDestroy {
       notes: normalizeString(raw.notes),
     };
 
-    // CORREÇÃO: takeUntil + finalize como operadores separados
     this.leadService
       .createLead(createDto)
       .pipe(
@@ -474,7 +602,6 @@ export class LeadDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Aceita any aqui pra evitar erro de template binding; ideal seria que app-lead-form emitisse Lead explicitamente.
   onLeadSaved(updated: any) {
     this.lead = updated as Lead;
     if (this.lead?.id) this.loadTasks(this.lead.id);
