@@ -1,15 +1,16 @@
 <div class="leads-header">
   <div class="left">
     <h2>Leads</h2>
+    <div class="sub">Total: {{ totalCount }}</div>
   </div>
 
   <div class="filters">
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="filter-search">
       <mat-label>Search</mat-label>
       <input matInput [formControl]="search" placeholder="Name or email" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="filter-status">
       <mat-label>Status</mat-label>
       <mat-select [formControl]="status">
         <mat-option value="">All</mat-option>
@@ -21,22 +22,82 @@
   </div>
 </div>
 
-<mat-list *ngIf="!loading && leads?.length">
-  <mat-list-item *ngFor="let lead of leads" (click)="openDetail(lead)" class="lead-item">
-    <div mat-line class="lead-name">{{ lead.firstName }} {{ lead.lastName }}</div>
-    <div mat-line class="lead-email">{{ lead.email }}</div>
-    <button mat-icon-button (click)="edit(lead, $event)" aria-label="Edit lead">
-      <mat-icon>edit</mat-icon>
-    </button>
-  </mat-list-item>
-</mat-list>
-
+<!-- Loading -->
 <div *ngIf="loading" class="center">
   <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 </div>
 
+<!-- Table list -->
+<div *ngIf="!loading && leads?.length" class="table-wrap">
+  <table class="leads-table" role="table" aria-label="Leads list">
+    <thead>
+      <tr>
+        <th class="col-name">Name</th>
+        <th class="col-company">Company</th>
+        <th class="col-email">Email</th>
+        <th class="col-title">Title</th>
+        <th class="col-status">Status</th>
+        <th class="col-actions" aria-hidden="true"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let lead of leads; trackBy: trackById" (click)="openDetail(lead)" tabindex="0">
+        <td class="col-name">
+          <div class="cell-left">
+            <div class="avatar">{{ getInitials(lead) }}</div>
+            <div class="name-block">
+              <div class="name">{{ lead.firstName }} {{ lead.lastName }}</div>
+              <div class="sub-email">{{ lead.email }}</div>
+            </div>
+          </div>
+        </td>
+
+        <td class="col-company">{{ lead.company }}</td>
+        <td class="col-email-cell">{{ lead.email }}</td>
+        <td class="col-title">{{ getJobTitle(lead) }}</td>
+
+        <td class="col-status">
+          <mat-chip class="status-chip" [attr.data-status]="lead.status || '' | lowercase">
+            {{ lead.status || 'Unknown' }}
+          </mat-chip>
+        </td>
+
+        <td class="col-actions" (click)="$event.stopPropagation()">
+          <button
+            mat-icon-button
+            (click)="edit(lead, $event)"
+            matTooltip="Edit"
+            aria-label="Edit lead"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            (click)="openDetail(lead)"
+            matTooltip="Open"
+            aria-label="Open lead"
+          >
+            <mat-icon>open_in_new</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 <div *ngIf="!loading && !leads?.length && !error" class="empty">No leads found.</div>
 
-<div *ngIf="error" class="error">
-  {{ error }}
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<!-- Paginator (server side paging) -->
+<div *ngIf="!loading && totalCount > pageSize" class="paginator-wrap">
+  <mat-paginator
+    [length]="totalCount"
+    [pageSize]="pageSize"
+    [pageIndex]="page - 1"
+    [pageSizeOptions]="[10, 20, 50]"
+    (page)="onPage($event)"
+  >
+  </mat-paginator>
 </div>
