@@ -11,5 +11,7 @@ namespace CrmApp.Application.DTOs
         public DateTime CreatedAt { get; set; }
         public DateTime? DueDate { get; set; }
         public int Order { get; set; }
+        public int? LeadId { get; set; }       
+        public string? LeadName { get; set; }      
     }
 }

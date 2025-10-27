@@ -77,7 +77,7 @@ export class TaskBoardComponent implements OnInit {
     this.errorMsg = '';
     this.taskService.getTasks().subscribe({
       next: (tasks: Task[]) => {
-        // reset buckets
+        console.log('tasks from API:', tasks);
         for (const s of this.statuses) {
           this.tasksByStatus[String(s)] = [];
         }
@@ -88,7 +88,6 @@ export class TaskBoardComponent implements OnInit {
           this.tasksByStatus[st].push(t);
         }
 
-        // sort by order if available
         for (const s of this.statuses) {
           const key = String(s);
           this.tasksByStatus[key].sort(
@@ -107,7 +106,6 @@ export class TaskBoardComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<Task[]>, status: TaskStatus): void {
-    // rearrange arrays locally
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -119,7 +117,6 @@ export class TaskBoardComponent implements OnInit {
       );
     }
 
-    // persist order + status for the target column
     const column = event.container.data;
     column.forEach((t: Task, idx: number) => {
       t.order = idx;
@@ -137,7 +134,6 @@ export class TaskBoardComponent implements OnInit {
   }
 
   onDragEnded(): void {
-    // small delay for UX consistency
     setTimeout(() => (this._isDragging = false), 50);
   }
 
@@ -176,11 +172,6 @@ export class TaskBoardComponent implements OnInit {
     });
   }
 
-  // --- helpers for UI ---
-
-  /**
-   * Return initials for avatar (e.g. "Lisa Runner" -> "LR")
-   */
   avatarInitials(name?: string | null): string {
     if (!name) return '';
     const parts = name.trim().split(/\s+/).filter(Boolean);
@@ -191,9 +182,6 @@ export class TaskBoardComponent implements OnInit {
     return `${first}${last}`;
   }
 
-  /**
-   * Try several locations to find the lead name for a task
-   */
   getLeadName(task: Task): string {
     if (!task) return 'Unknown';
     if (task.leadName && String(task.leadName).trim()) return String(task.leadName).trim();
@@ -212,7 +200,6 @@ export class TaskBoardComponent implements OnInit {
     return 'Unknown';
   }
 
-  // returns a friendly priority label (or empty)
   getPriorityLabel(task: Task): string {
     if (!task) return '';
     if (task.priority) return String(task.priority);
@@ -220,7 +207,6 @@ export class TaskBoardComponent implements OnInit {
     return '';
   }
 
-  // returns CSS class for priority-based dot and badge
   getPriorityClass(task: Task): string {
     if (!task) return 'priority-low';
     // priority first
@@ -239,10 +225,8 @@ export class TaskBoardComponent implements OnInit {
     }
   }
 
-  // dot class (kept for backward compatibility, but now based on priority)
   getDotClass(task: Task): string {
-    // alias to priority class but with dot- prefix
     const base = this.getPriorityClass(task).replace('priority-', '');
-    return `dot-${base}`; // e.g. 'dot-urgent', 'dot-high', ...
+    return `dot-${base}`;
   }
 }

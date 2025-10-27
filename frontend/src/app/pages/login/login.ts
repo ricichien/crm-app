@@ -27,7 +27,7 @@ export class LoginPage {
   onSubmit() {
     this.error = '';
     this.authService.login(this.username, this.password).subscribe({
-      next: () => this.router.navigate(['/tasks']),
+      next: () => this.router.navigate(['/board']),
       error: () => (this.error = 'Usuário ou senha inválidos'),
     });
   }

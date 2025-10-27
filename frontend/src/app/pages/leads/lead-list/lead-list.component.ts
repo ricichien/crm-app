@@ -17,6 +17,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatChipsModule } from '@angular/material/chips';
+import { NavbarComponent } from '@app/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-leads-list',
@@ -34,6 +35,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatTooltipModule,
     MatPaginatorModule,
     MatChipsModule,
+    NavbarComponent,
   ],
   templateUrl: './lead-list.component.html',
   styleUrls: ['./lead-list.component.scss'],

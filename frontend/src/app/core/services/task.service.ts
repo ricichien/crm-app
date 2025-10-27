@@ -45,7 +45,12 @@ export class TaskService {
       order: raw.order ?? 0,
       createdAt: raw.createdAt ?? new Date().toISOString(),
       lastModifiedAt: raw.lastModifiedAt ?? raw.updatedAt ?? new Date().toISOString(),
+
       lead: raw.lead ?? undefined,
+      leadName:
+        raw.leadName ??
+        (raw.lead ? `${raw.lead.firstName ?? ''} ${raw.lead.lastName ?? ''}`.trim() : undefined),
+      leadAvatarUrl: raw.leadAvatarUrl ?? (raw.lead ? raw.lead.avatarUrl : undefined),
     } as Task;
   }
 

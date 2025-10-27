@@ -14,18 +14,18 @@ namespace CrmApp.Infrastructure.Repositories
         public TaskItemRepository(AppDbContext db) => _db = db;
 
         public async Task<IEnumerable<TaskItem>> GetAllAsync()
-        {
-            return await _db.TaskItems
-                .AsNoTracking()
-                .Where(t => !t.IsDeleted)
-                .OrderBy(t => t.Order)
-                .ToListAsync();
-        }
+{
+    return await _db.TaskItems
+               .Include(t => t.Lead)  
+               .ToListAsync();
+}
 
-        public async Task<TaskItem?> GetByIdAsync(int id)
-        {
-            return await _db.TaskItems.FindAsync(id);
-        }
+public async Task<TaskItem?> GetByIdAsync(int id)
+{
+    return await _db.TaskItems
+               .Include(t => t.Lead)
+               .FirstOrDefaultAsync(t => t.Id == id);
+}
 
         public async Task<TaskItem> CreateAsync(TaskItem item)
         {

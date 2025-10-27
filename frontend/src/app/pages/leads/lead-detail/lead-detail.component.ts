@@ -30,9 +30,8 @@ import { finalize, Subject, takeUntil } from 'rxjs';
 
 import { TaskFormComponent } from '@app/components/task-form/task-form.component';
 import { TaskFormDialogComponent } from '@app/components/task-form-dialog/task-form-dialog.component';
-
-// <-- Ajuste este import para o path real do seu LeadFormComponent se necessário
 import { LeadFormComponent } from '@app/pages/leads/lead-form/lead-form.component';
+import { NavbarComponent } from '@app/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-lead-detail',
@@ -50,9 +49,11 @@ import { LeadFormComponent } from '@app/pages/leads/lead-form/lead-form.componen
     RouterModule,
     TaskFormComponent,
     TaskFormDialogComponent,
-    LeadFormComponent, // necessário para reconhecer <app-lead-form>
+    LeadFormComponent,
+    NavbarComponent,
   ],
   template: `
+    <app-navbar></app-navbar>
     <div class="lead-detail">
       <div class="lead-form">
         <h3>{{ isEditMode ? 'Edit Lead' : 'New Lead' }}</h3>

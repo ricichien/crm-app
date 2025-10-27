@@ -8,13 +8,13 @@ using CrmApp.Application;
 using CrmApp.Infrastructure;
 using Serilog;
 using CrmApp.Application.Interfaces;
-using CrmApp.Domain.Entities;      // User entity
-using CrmApp.Infrastructure.Services; // para UserServiceHelpers (deixe público);      // TaskItemService, LeadService
-using CrmApp.Infrastructure.Repositories; // LeadRepository, TaskItemRepository
+using CrmApp.Domain.Entities;
+using CrmApp.Infrastructure.Services; 
+using CrmApp.Infrastructure.Repositories; 
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ---------- Logging (Serilog) ----------
 builder.Host.UseSerilog((context, services, configuration) =>
 {
     configuration.WriteTo.Console()
@@ -23,30 +23,17 @@ builder.Host.UseSerilog((context, services, configuration) =>
                  .Enrich.FromLogContext();
 });
 
-// ---------- Add modular services ----------
 builder.Services.AddApplication();
+
 builder.Services.AddInfrastructure(builder.Configuration);
 
-// ---------- Repositórios e services (caso precise registro explícito) ----------
 builder.Services.AddScoped<CrmApp.Application.Interfaces.IUserService, CrmApp.Infrastructure.Services.UserService>();
-// os outros services (Lead, Task) já devem ser registrados por AddApplication/AddInfrastructure
-// builder.Services.AddScoped<ILeadService, LeadService>(); // se necessário
-// Leads
-// User
-// Lead
 builder.Services.AddScoped<ILeadService, LeadService>();
 builder.Services.AddScoped<ILeadRepository, LeadRepository>();
-
 builder.Services.AddScoped<ITaskItemService, TaskItemService>();
 builder.Services.AddScoped<ITaskItemRepository, TaskItemRepository>();
-
-// Outros services/repositories que você tiver
-
-
-
 builder.Services.AddHttpContextAccessor();
 
-// ---------- Controllers + JSON options ----------
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -54,7 +41,6 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
     });
 
-// ---------- JWT Authentication ----------
 var jwtSecret = builder.Configuration["Jwt:Secret"] ?? "MinhaChaveUltraSecretaUltraLonga1234!"; // >= 32 chars recommended
 
 builder.Services.AddAuthentication(options =>
@@ -77,7 +63,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// ---------- Swagger ----------
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -107,11 +92,9 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
-    // evita colisões de nomes em schemas
     c.CustomSchemaIds(type => type.FullName!.Replace("+", "."));
 });
 
-// ---------- CORS ----------
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("DevCors", policy =>
@@ -122,10 +105,8 @@ builder.Services.AddCors(options =>
     });
 });
 
-// ---------- Build app ----------
 var app = builder.Build();
 
-// ---------- Apply migrations & seed (dev) ----------
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -134,11 +115,9 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var db = services.GetRequiredService<AppDbContext>();
-        // aplica migrations
         await db.Database.MigrateAsync();
         logger.LogInformation("Migrations applied successfully.");
 
-        // Seed admin user (somente se tabela Users vazia)
         if (!await db.Users.AnyAsync())
         {
             var admin = new User
@@ -160,7 +139,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// ---------- Middleware pipeline ----------
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -169,7 +147,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "CRM API v1");
-        c.RoutePrefix = "swagger"; // /swagger
+        c.RoutePrefix = "swagger"; 
     });
 }
 

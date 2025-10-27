@@ -1,28 +1,139 @@
-:host {
-  display: block;
+/* We rely on the CSS variable defined in navbar; fallback if not present */
+:root {
+  --navbar-height: 64px;
 }
-.mat-form-field {
-  width: 100%;
-}
-.mat-dialog-actions {
+
+.page-container {
+  /* push content below the fixed navbar */
+  padding-top: calc(var(--navbar-height) + 16px);
+  background: #f7f8fb; /* subtle BG, card sections are white */
+  min-height: 100vh;
+  padding-left: 16px;
+  padding-right: 16px;
   display: flex;
-  justify-content: flex-end;
-  gap: 8px;
+  justify-content: center;
 }
 
-.task-row {
-  transition: background 0.2s ease;
+.lead-detail {
+  width: 100%;
+  max-width: 1100px;
+  margin-bottom: 48px;
 
-  &:hover {
-    background: #fafafa;
+  .card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 6px 18px rgba(13, 38, 59, 0.04);
+    margin-bottom: 16px;
   }
 
-  button {
-    opacity: 0.7;
-    transition: opacity 0.2s;
+  h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+  }
 
-    &:hover {
-      opacity: 1;
+  form {
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
     }
+
+    .full {
+      width: 100%;
+      margin-top: 12px;
+    }
+
+    .selects {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 16px;
+    }
+  }
+
+  hr {
+    border: none;
+    height: 1px;
+    background: transparent;
+    margin: 16px 0;
+  }
+
+  .lead-tasks {
+    .tasks-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .tasks-loading {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      color: #6b7280;
+    }
+
+    .empty {
+      color: #6b7280;
+      padding: 12px 0;
+    }
+
+    .tasks-list {
+      .task-row {
+        padding: 10px;
+        border-radius: 8px;
+        transition: background 0.12s ease;
+        &:hover {
+          background: #fbfdff;
+        }
+
+        .task-main {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 12px;
+
+          .task-title {
+            font-weight: 600;
+          }
+          .task-meta {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+          }
+
+          .task-actions button {
+            opacity: 0.85;
+          }
+        }
+      }
+    }
+
+    .task-form-wrap {
+      margin-top: 12px;
+      background: #fff;
+      padding: 12px;
+      border-radius: 8px;
+    }
+  }
+}
+
+/* small screens */
+@media (max-width: 720px) {
+  .lead-detail form .row,
+  .lead-detail form .selects {
+    grid-template-columns: 1fr;
+  }
+
+  .app-navbar .nav-inner {
+    padding: 0 12px;
   }
 }

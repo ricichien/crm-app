@@ -26,7 +26,7 @@
               (click)="onCardClick(t)"
             >
               <div class="card-header" cdkDragHandle>
-                <!-- <div class="lead-block">
+                <div class="lead-block">
                   <ng-container *ngIf="t.leadAvatarUrl; else initials">
                     <img class="avatar-img" [src]="t.leadAvatarUrl" alt="avatar" />
                   </ng-container>
@@ -39,7 +39,7 @@
                   <div class="lead-text">
                     <div class="lead-name">{{ getLeadName(t) }}</div>
                   </div>
-                </div> -->
+                </div>
 
                 <div class="card-side">
                   <span class="meta" *ngIf="t.dueDate">{{ t.dueDate | date : 'shortDate' }}</span>
