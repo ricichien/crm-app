@@ -17,6 +17,7 @@ namespace CrmApp.Infrastructure.Repositories
         {
             return await _db.TaskItems
                 .AsNoTracking()
+                .Where(t => !t.IsDeleted)
                 .OrderBy(t => t.Order)
                 .ToListAsync();
         }
@@ -42,10 +43,11 @@ namespace CrmApp.Infrastructure.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var e = await _db.TaskItems.FindAsync(id);
-            if (e != null)
+            var entity = await _db.TaskItems.FindAsync(id);
+            if (entity != null)
             {
-                _db.TaskItems.Remove(e);
+                entity.IsDeleted = true;
+                entity.LastModifiedAt = DateTime.UtcNow;
                 await _db.SaveChangesAsync();
             }
         }

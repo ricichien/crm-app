@@ -252,6 +252,25 @@ export class LeadDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  deleteTask(t: Task) {
+    if (!t?.id) return;
+
+    const confirmed = confirm(`Delete task "${t.title}"?`);
+    if (!confirmed) return;
+
+    this.taskService.deleteTask(t.id).subscribe({
+      next: () => {
+        // Remove imediatamente do array local
+        this.tasks = this.tasks.filter((task) => task.id !== t.id);
+        console.log(`[LeadDetail] Task ${t.id} deleted`);
+      },
+      error: (err) => {
+        console.error('Error deleting task', err);
+        alert('Error deleting task.');
+      },
+    });
+  }
+
   onTaskCancelled() {
     this.showTaskForm = false;
     this.editingTask = undefined;

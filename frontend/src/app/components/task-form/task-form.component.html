@@ -1,4 +1,12 @@
 <form [formGroup]="form" (ngSubmit)="save()" class="task-form">
+  <h2 mat-dialog-title class="dialog-title">
+    <!-- {{ data.task ? 'Edit Task' : 'New Task' }} -->
+    {{ task ? 'Edit Task' : 'New Task' }}
+    <!-- Botão X -->
+    <button mat-icon-button class="close-btn" mat-dialog-close aria-label="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </h2>
   <mat-form-field appearance="outline" class="full">
     <mat-label>Title</mat-label>
     <input matInput formControlName="title" placeholder="Task title" />

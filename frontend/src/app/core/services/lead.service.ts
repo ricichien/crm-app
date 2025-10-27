@@ -73,4 +73,12 @@ export class LeadService {
       })
     );
   }
+  // deleteLead(id: string) {
+  //   return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+  //     catchError((err) => {
+  //       console.error('deleteLead error', err);
+  //       return throwError(() => err?.error ?? err);
+  //     })
+  //   );
+  // }
 }

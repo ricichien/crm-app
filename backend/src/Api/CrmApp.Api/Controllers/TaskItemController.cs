@@ -4,8 +4,6 @@ using CrmApp.Application.Interfaces;
 using CrmApp.Application.DTOs;
 using CrmApp.Domain.Entities;
 using CrmApp.Domain.Enums;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
 namespace CrmApp.Api.Controllers
 {
@@ -27,32 +25,36 @@ namespace CrmApp.Api.Controllers
         public async Task<IActionResult> GetAll()
         {
             var tasks = await _repo.GetAllAsync();
-            return Ok(tasks);
+            return Ok(tasks.Where(t => !t.IsDeleted));
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
             var task = await _repo.GetByIdAsync(id);
-            if (task == null) return NotFound();
+            if (task == null || task.IsDeleted)
+                return NotFound();
+
             return Ok(task);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TaskItemCreateDto dto)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+            if (!ModelState.IsValid)
+                return ValidationProblem(ModelState);
 
             var entity = new TaskItem
             {
                 Title = dto.Title,
                 Description = dto.Description,
-                DueDate = dto.DueDate ?? default, // if you prefer nullable in entity, set accordingly
+                DueDate = dto.DueDate ?? default,
                 Priority = dto.Priority,
                 Status = dto.Status,
                 LeadId = dto.LeadId,
                 Order = dto.Order,
-                CreatedAt = System.DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                IsDeleted = false
             };
 
             var created = await _repo.CreateAsync(entity);
@@ -62,10 +64,12 @@ namespace CrmApp.Api.Controllers
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] TaskItemUpdateDto dto)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+            if (!ModelState.IsValid)
+                return ValidationProblem(ModelState);
 
             var task = await _repo.GetByIdAsync(id);
-            if (task == null) return NotFound();
+            if (task == null || task.IsDeleted)
+                return NotFound();
 
             task.Title = dto.Title;
             task.Description = dto.Description;
@@ -74,7 +78,7 @@ namespace CrmApp.Api.Controllers
             task.Status = dto.Status;
             task.LeadId = dto.LeadId;
             task.Order = dto.Order;
-            task.LastModifiedAt = System.DateTime.UtcNow;
+            task.LastModifiedAt = DateTime.UtcNow;
 
             var updated = await _repo.UpdateAsync(task);
             return Ok(updated);
@@ -84,12 +88,27 @@ namespace CrmApp.Api.Controllers
         public async Task<IActionResult> Move([FromBody] MoveTaskDto dto)
         {
             var task = await _repo.GetByIdAsync(dto.TaskId);
-            if (task == null) return NotFound();
+            if (task == null || task.IsDeleted)
+                return NotFound();
 
             task.Status = dto.NewStatus;
             task.Order = dto.NewOrder;
             var updated = await _repo.UpdateAsync(task);
             return Ok(updated);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> SoftDelete(int id)
+        {
+            var task = await _repo.GetByIdAsync(id);
+            if (task == null)
+                return NotFound();
+
+            task.IsDeleted = true;
+            task.LastModifiedAt = DateTime.UtcNow;
+
+            await _repo.UpdateAsync(task);
+            return NoContent();
         }
     }
 

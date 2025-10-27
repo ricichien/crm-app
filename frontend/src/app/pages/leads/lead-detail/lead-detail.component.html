@@ -65,7 +65,12 @@
             </div>
           </div>
           <div>
-            <button mat-icon-button (click)="editTask(t)"><mat-icon>edit</mat-icon></button>
+            <button mat-icon-button color="primary" (click)="editTask(t)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteTask(t)">
+              <mat-icon>delete</mat-icon>
+            </button>
           </div>
         </div>
       </div>
