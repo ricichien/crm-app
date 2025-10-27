@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,8 @@ namespace CrmApp.Api.Controllers
                 Title = t.Title,
                 Description = t.Description,
                 IsCompleted = isCompleted,
+                Status = t.Status,
+                Priority = t.Priority,
                 CreatedAt = t.CreatedAt,
                 DueDate = t.DueDate,
                 Order = t.Order,
@@ -50,59 +53,60 @@ namespace CrmApp.Api.Controllers
         }
 
         [HttpGet("{id:int}")]
-public async Task<IActionResult> GetById(int id)
-{
-    var task = await _repo.GetByIdAsync(id);
-    if (task == null || task.IsDeleted) return NotFound();
-    return Ok(ToDto(task));
-}
-
+        public async Task<IActionResult> GetById(int id)
+        {
+            var task = await _repo.GetByIdAsync(id);
+            if (task == null || task.IsDeleted) return NotFound();
+            return Ok(ToDto(task));
+        }
 
         [HttpGet]
-public async Task<IActionResult> GetAll()
-{
-    var tasks = await _repo.GetAllAsync(); 
-    var visible = tasks
-        .Where(t => !t.IsDeleted)
-        .Select(t => new TaskItemDto {
-            Id = t.Id,
-            Title = t.Title,
-            Description = t.Description,
-            IsCompleted = t.Status == TaskItemStatus.Completed,
-            CreatedAt = t.CreatedAt,
-            DueDate = t.DueDate,
-            Order = t.Order,
-            LeadId = t.LeadId,
-            LeadName = t.Lead != null ? $"{t.Lead.FirstName} {t.Lead.LastName}".Trim() : null
-        });
+        public async Task<IActionResult> GetAll()
+        {
+            var tasks = await _repo.GetAllAsync();
+            var visible = tasks
+                .Where(t => !t.IsDeleted)
+                .Select(t => new TaskItemDto
+                {
+                    Id = t.Id,
+                    Title = t.Title,
+                    Description = t.Description,
+                    IsCompleted = t.Status == TaskItemStatus.Completed,
+                    Status = t.Status,
+                    Priority = t.Priority,
+                    CreatedAt = t.CreatedAt,
+                    DueDate = t.DueDate,
+                    Order = t.Order,
+                    LeadId = t.LeadId,
+                    LeadName = t.Lead != null ? $"{t.Lead.FirstName} {t.Lead.LastName}".Trim() : null
+                });
 
-    return Ok(visible);
-}
+            return Ok(visible);
+        }
 
         [HttpPost]
-public async Task<IActionResult> Create([FromBody] TaskItemCreateDto dto)
-{
-    if (!ModelState.IsValid) return ValidationProblem(ModelState);
+        public async Task<IActionResult> Create([FromBody] TaskItemCreateDto dto)
+        {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
-    var entity = new TaskItem
-    {
-        Title = dto.Title,
-        Description = dto.Description,
-        DueDate = dto.DueDate ?? DateTime.UtcNow,
-        Priority = dto.Priority,
-        Status = dto.Status,
-        LeadId = dto.LeadId,
-        Order = dto.Order,
-        CreatedAt = DateTime.UtcNow,         
-        IsDeleted = false
-    };
+            var entity = new TaskItem
+            {
+                Title = dto.Title,
+                Description = dto.Description,
+                DueDate = dto.DueDate ?? DateTime.UtcNow,
+                Priority = dto.Priority,
+                Status = dto.Status,
+                LeadId = dto.LeadId,
+                Order = dto.Order,
+                CreatedAt = DateTime.UtcNow,
+                IsDeleted = false
+            };
 
-    var created = await _repo.CreateAsync(entity);
+            var created = await _repo.CreateAsync(entity);
 
-    var createdWithLead = await _repo.GetByIdAsync(created.Id);
-    return CreatedAtAction(nameof(GetById), new { id = created.Id }, ToDto(createdWithLead!));
-}
-
+            var createdWithLead = await _repo.GetByIdAsync(created.Id);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, ToDto(createdWithLead!));
+        }
 
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] TaskItemUpdateDto dto)
@@ -132,7 +136,8 @@ public async Task<IActionResult> Create([FromBody] TaskItemCreateDto dto)
             var task = await _repo.GetByIdAsync(dto.TaskId);
             if (task == null || task.IsDeleted) return NotFound();
 
-            task.Status = dto.NewStatus;
+            // dto.NewStatus vem como inteiro para evitar colisões com enums do framework
+            task.Status = (TaskItemStatus)dto.NewStatus;
             task.Order = dto.NewOrder;
             var updated = await _repo.UpdateAsync(task);
             var updatedWithLead = await _repo.GetByIdAsync(updated.Id);
@@ -156,7 +161,7 @@ public async Task<IActionResult> Create([FromBody] TaskItemCreateDto dto)
     public class MoveTaskDto
     {
         public int TaskId { get; set; }
-        public TaskItemStatus NewStatus { get; set; }
+        public int NewStatus { get; set; }
         public int NewOrder { get; set; }
     }
 }

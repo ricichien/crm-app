@@ -28,11 +28,17 @@ export class TaskService {
   constructor(private http: HttpClient) {}
 
   private mapFromBackend(raw: any): Task {
-    const statusRaw = raw.status;
+    const statusRaw =
+      raw.status ??
+      (raw.isCompleted !== undefined
+        ? raw.isCompleted
+          ? TaskStatus.Completed
+          : TaskStatus.Pending
+        : undefined);
     const status =
       typeof statusRaw === 'number'
         ? NUMBER_TO_STATUS[statusRaw] ?? TaskStatus.Pending
-        : (statusRaw as TaskStatus);
+        : (statusRaw as TaskStatus) ?? TaskStatus.Pending;
 
     return {
       id: String(raw.id),
@@ -60,19 +66,31 @@ export class TaskService {
         dto.status !== undefined && dto.status !== null
           ? STATUS_TO_NUMBER[dto.status as TaskStatus]
           : undefined,
-      dueDate: dto.dueDate === null ? null : dto.dueDate, // mantém null explicitamente
+      dueDate: dto.dueDate === null ? null : dto.dueDate,
       leadId: dto.leadId ?? null,
     };
   }
 
   private mapToBackendUpdate(dto: TaskUpdateDto) {
     const out: any = { ...dto };
+
     if (dto.status !== undefined && dto.status !== null) {
       out.status = STATUS_TO_NUMBER[dto.status as TaskStatus];
+    } else {
+      delete out.status;
     }
-    // se for undefined, mantemos omisso; se foi enviado explicitamente null, mantemos null
-    if (dto.leadId === undefined) out.leadId = null;
-    if (dto.dueDate === undefined) delete out.dueDate; // não enviar campo se não informado
+
+    if (dto.leadId === undefined) {
+      delete out.leadId;
+    } else {
+      out.leadId = dto.leadId;
+    }
+
+    if (dto.dueDate === undefined) {
+      delete out.dueDate;
+    } else {
+      out.dueDate = dto.dueDate;
+    }
     return out;
   }
 
