@@ -1,4 +1,4 @@
-// SCSS variables
+/* SCSS variables */
 $bg: #f3f4f6;
 $text: #111827;
 $muted: #6b7280;
@@ -189,4 +189,225 @@ $dot-pink: #f472b6;
   .column {
     width: 260px;
   }
+}
+
+/* lead avatar + name in header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  cursor: grab;
+
+  .lead-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+      box-shadow: 0 2px 6px rgba(11, 15, 30, 0.06);
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+
+    .lead-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+
+      .lead-name {
+        font-weight: 700;
+        font-size: 14px;
+        color: $text;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .lead-sub {
+        font-size: 12px;
+        color: $muted;
+        margin-top: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  .card-side {
+    .meta {
+      font-size: 12px;
+      color: $muted;
+    }
+  }
+}
+
+/* title / description */
+.card-body {
+  margin-top: 8px;
+
+  .task-title-link {
+    color: #2563eb;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    margin-bottom: 6px;
+    display: block;
+    word-break: break-word;
+  }
+
+  .task-desc {
+    color: #374151;
+    font-size: 13px;
+    margin-top: 6px;
+  }
+}
+
+/* footer: left (price + badge) and right (status) */
+.card-footer {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .price {
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #f3f4f6;
+      border: 1px solid #eef2f7;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #334155;
+    }
+  }
+
+  .footer-right {
+    .status-label {
+      color: $accent-yellow;
+      font-weight: 700;
+      font-size: 13px;
+      display: inline-block;
+      text-align: right;
+    }
+  }
+}
+
+/* small responsive adjustments */
+@media (max-width: 720px) {
+  .card-header .lead-text .lead-name {
+    font-size: 13px;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+  }
+  .task-title-link {
+    font-size: 14px;
+  }
+}
+
+/* avatar image fallback */
+.avatar-img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(11, 15, 30, 0.06);
+  flex-shrink: 0;
+}
+
+/* footer right: status label + dot */
+.card-footer {
+  .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .status-label {
+      color: $accent-yellow;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    }
+
+    /* color variants */
+    .dot-urgent {
+      background: #f472b6;
+    } /* pink */
+    .dot-high {
+      background: #ef4444;
+    } /* red */
+    .dot-medium {
+      background: #f59e0b;
+    } /* amber/yellow */
+    .dot-low {
+      background: #10b981;
+    } /* green */
+  }
+}
+
+/* priority badge (left) */
+.priority-badge {
+  display: inline-block;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  color: white;
+}
+
+/* priority color variants */
+.priority-urgent {
+  background: #f472b6;
+} /* pink */
+.priority-high {
+  background: #ef4444;
+} /* red */
+.priority-medium {
+  background: #f59e0b;
+} /* amber */
+.priority-low {
+  background: #10b981;
+} /* green */
+
+/* dot classes mirror priority */
+.dot-urgent {
+  background: #f472b6;
+}
+.dot-high {
+  background: #ef4444;
+}
+.dot-medium {
+  background: #f59e0b;
+}
+.dot-low {
+  background: #10b981;
 }

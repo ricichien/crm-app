@@ -1,12 +1,11 @@
-<form [formGroup]="form" (ngSubmit)="save()" class="task-form">
-  <h2 mat-dialog-title class="dialog-title">
-    <!-- {{ data.task ? 'Edit Task' : 'New Task' }} -->
-    {{ task ? 'Edit Task' : 'New Task' }}
-    <!-- Botão X -->
-    <button mat-icon-button class="close-btn" mat-dialog-close aria-label="Close">
+<!-- <form [formGroup]="form" (ngSubmit)="save()" class="task-form-card">
+  <div class="task-header">
+    <h3>{{ task ? 'Edit Task' : 'New Task' }}</h3>
+    <button mat-icon-button class="close-btn" type="button" (click)="cancel()" aria-label="Close">
       <mat-icon>close</mat-icon>
     </button>
-  </h2>
+  </div>
+
   <mat-form-field appearance="outline" class="full">
     <mat-label>Title</mat-label>
     <input matInput formControlName="title" placeholder="Task title" />
@@ -19,7 +18,7 @@
     <textarea matInput formControlName="description" rows="3"></textarea>
   </mat-form-field>
 
-  <div class="row two-cols">
+  <div class="two-cols">
     <mat-form-field appearance="outline">
       <mat-label>Due date</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="dueDate" />
@@ -35,7 +34,7 @@
     </mat-form-field>
   </div>
 
-  <div class="row two-cols">
+  <div class="two-cols">
     <mat-form-field appearance="outline">
       <mat-label>Status</mat-label>
       <mat-select formControlName="status">
@@ -51,7 +50,6 @@
 
   <div class="actions">
     <button mat-stroked-button type="button" (click)="cancel()" [disabled]="loading">Cancel</button>
-
     <button mat-flat-button color="primary" type="submit" [disabled]="loading || form.invalid">
       <ng-container *ngIf="!loading">Save</ng-container>
       <ng-container *ngIf="loading">
@@ -61,30 +59,75 @@
     </button>
   </div>
 
-  <div class="error" *ngIf="serverError">{{ serverError }}</div>
-</form>
+  <div class="server-error" *ngIf="serverError">{{ serverError }}</div>
+</form> -->
 
-<style>
-  .task-form {
-    max-width: 720px;
-  }
-  .full {
-    width: 100%;
-  }
-  .two-cols {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 12px;
-    align-items: center;
-  }
-  .error {
-    color: #c62828;
-    margin-top: 8px;
-  }
-</style>
+<form [formGroup]="form" (ngSubmit)="save()" class="task-form-card">
+  <div class="task-header">
+    <button
+      *ngIf="!hideActions"
+      mat-icon-button
+      class="close-btn"
+      type="button"
+      (click)="cancel()"
+      aria-label="Close"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title" placeholder="Task title" />
+    <mat-error *ngIf="titleControl.hasError('required')">Title is required</mat-error>
+    <mat-error *ngIf="titleControl.hasError('minlength')">Minimum 3 characters</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description" rows="3"></textarea>
+  </mat-form-field>
+
+  <div class="two-cols">
+    <mat-form-field appearance="outline">
+      <mat-label>Due date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="dueDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Priority</mat-label>
+      <mat-select formControlName="priority">
+        <mat-option *ngFor="let p of priorities" [value]="p">{{ p }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="two-cols">
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let s of statuses" [value]="s">{{ s }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Order</mat-label>
+      <input matInput type="number" formControlName="order" />
+    </mat-form-field>
+  </div>
+
+  <div class="actions" *ngIf="!hideActions">
+    <button mat-stroked-button type="button" (click)="cancel()" [disabled]="loading">Cancel</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="loading || form.invalid">
+      <ng-container *ngIf="!loading">Save</ng-container>
+      <ng-container *ngIf="loading">
+        <mat-progress-spinner diameter="18" mode="indeterminate"></mat-progress-spinner>
+        Saving...
+      </ng-container>
+    </button>
+  </div>
+
+  <div class="server-error" *ngIf="serverError">{{ serverError }}</div>
+</form>

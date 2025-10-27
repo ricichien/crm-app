@@ -1,10 +1,10 @@
 // variables (SCSS)
 $bg: #f3f4f6;
-$text: #111827;
-$border: #e6e7eb;
+$text: #adadad;
+$border: #2b2b2b;
 $btn-gradient-start: #3b82f6;
 $btn-gradient-end: #60a5fa;
-$surface: #fff;
+$surface: #2b2b2b;
 
 .navbar {
   display: flex;
@@ -45,7 +45,7 @@ $surface: #fff;
 
     .meta {
       font-size: 13px;
-      color: #475569;
+      color: #d8d8d8;
     }
 
     .action {
@@ -57,13 +57,13 @@ $surface: #fff;
     }
 
     .autom {
-      background: transparent;
+      background: f0f4f8;
       border: 1px solid #f0f4f8;
     }
 
     .btn-new {
       background: linear-gradient(90deg, $btn-gradient-start 0%, $btn-gradient-end 100%);
-      color: white;
+      // color: white;
       box-shadow: 0 6px 18px rgba(96, 165, 250, 0.12);
     }
   }

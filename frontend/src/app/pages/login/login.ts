@@ -16,7 +16,13 @@ export class LoginPage {
   password = '';
   error = '';
 
+  showPassword = false;
+
   constructor(private authService: AuthService, private router: Router) {}
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
 
   onSubmit() {
     this.error = '';

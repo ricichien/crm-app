@@ -14,8 +14,7 @@ public interface ILeadService
 
     Task<LeadDto> CreateLeadAsync(LeadCreateDto createDto, CancellationToken cancellationToken = default);
 
-    Task<LeadDto?> UpdateLeadAsync(int Id, LeadCreateDto updateDto,
-        CancellationToken cancellationToken = default);
+    Task<LeadDto?> UpdateLeadAsync(int id, LeadUpdateDto updateDto, CancellationToken cancellationToken = default);
 
     Task<bool> DeleteLeadAsync(int Id, CancellationToken cancellationToken = default);
 

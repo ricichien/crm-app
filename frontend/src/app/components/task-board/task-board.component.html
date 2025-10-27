@@ -1,7 +1,6 @@
 <app-navbar></app-navbar>
 
 <div class="layout">
-  <!-- optional: add <app-sidebar> here if you want a visible sidebar -->
   <main class="content">
     <div class="task-board">
       <h1 class="board-title">Task Board</h1>
@@ -27,20 +26,43 @@
               (click)="onCardClick(t)"
             >
               <div class="card-header" cdkDragHandle>
-                <div class="title-left">
-                  <strong class="task-title">{{ t.title }}</strong>
-                </div>
+                <!-- <div class="lead-block">
+                  <ng-container *ngIf="t.leadAvatarUrl; else initials">
+                    <img class="avatar-img" [src]="t.leadAvatarUrl" alt="avatar" />
+                  </ng-container>
+                  <ng-template #initials>
+                    <div class="avatar" aria-hidden="true">
+                      {{ avatarInitials(getLeadName(t)) }}
+                    </div>
+                  </ng-template>
+
+                  <div class="lead-text">
+                    <div class="lead-name">{{ getLeadName(t) }}</div>
+                  </div>
+                </div> -->
+
                 <div class="card-side">
                   <span class="meta" *ngIf="t.dueDate">{{ t.dueDate | date : 'shortDate' }}</span>
                 </div>
               </div>
 
-              <div class="card-body">{{ t.description }}</div>
+              <div class="card-body">
+                <div class="task-title-link">{{ t.title }}</div>
+                <div class="task-desc" *ngIf="t.description">{{ t.description }}</div>
+              </div>
 
               <div class="card-footer">
-                <span class="badge">$450</span>
-                <span class="badge">Urgent</span>
-                <span class="status-dot urgent-dot" title="priority"></span>
+                <div class="footer-right">
+                  <span class="badge">$450</span>
+                  <div class="badge">
+                    <span>{{ getPriorityLabel(t) }}</span>
+                    <span
+                      class="status-dot"
+                      [ngClass]="getDotClass(t)"
+                      [title]="getPriorityLabel(t)"
+                    ></span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

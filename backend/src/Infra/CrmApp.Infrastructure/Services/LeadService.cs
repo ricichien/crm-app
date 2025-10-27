@@ -123,20 +123,22 @@ namespace CrmApp.Infrastructure.Services
             };
         }
 
-        public async Task<LeadDto?> UpdateLeadAsync(int id, LeadCreateDto updateDto, CancellationToken cancellationToken = default)
+        public async Task<LeadDto?> UpdateLeadAsync(int id, LeadUpdateDto updateDto, CancellationToken cancellationToken = default)
         {
             var lead = await _context.Leads.FindAsync(new object[] { id }, cancellationToken);
             if (lead == null) return null;
 
-            lead.FirstName = updateDto.FirstName;
-            lead.LastName = updateDto.LastName;
-            lead.Email = updateDto.Email;
-            lead.Phone = updateDto.Phone;
-            lead.Company = updateDto.Company;
-            lead.JobTitle = updateDto.JobTitle;
-            lead.Source = updateDto.Source;
-            lead.Status = updateDto.Status;
-            lead.Notes = updateDto.Notes;
+            // Aplicar somente campos não-nulos (preservando valores existentes)
+            if (updateDto.FirstName != null) lead.FirstName = updateDto.FirstName;
+            if (updateDto.LastName != null) lead.LastName = updateDto.LastName;
+            if (updateDto.Email != null) lead.Email = updateDto.Email;
+            if (updateDto.Phone != null) lead.Phone = updateDto.Phone;
+            if (updateDto.Company != null) lead.Company = updateDto.Company;
+            if (updateDto.JobTitle != null) lead.JobTitle = updateDto.JobTitle;
+            if (updateDto.Source.HasValue) lead.Source = updateDto.Source.Value;
+            if (updateDto.Status.HasValue) lead.Status = updateDto.Status.Value;
+            if (updateDto.Notes != null) lead.Notes = updateDto.Notes;
+
             lead.LastModifiedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync(cancellationToken);

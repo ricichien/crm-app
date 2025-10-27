@@ -14,19 +14,30 @@
 html,
 body * {
   font-family: 'Inter', Roboto, sans-serif;
-  color: #374151;
+  color: #494949;
   // background: #f4f6fb;
   // height: 100%;
 }
 
-// :root {
-//   --sidebar-bg: #1e293b; /* azul escuro */
-//   --sidebar-bg-accent: #0b1220;
-//   --sidebar-text: #e6eef8;
-//   --sidebar-muted: #9fb6d9;
-//   --sidebar-active: #334155;
-//   --sidebar-hover: rgba(255, 255, 255, 0.05);
+// /* styles.scss ou component stylesheet global */
+// .task-dialog-panel .mat-dialog-container {
+//   padding: 0; /* wrapper já controla paddings */
+//   border-radius: 10px;
+//   overflow: hidden;
 // }
+
+// .cdk-overlay-backdrop.mat-overlay-backdrop {
+//   background-color: rgba(0, 0, 0, 0.6);
+// }
+
+:root {
+  --sidebar-bg: #2b2b2b;
+  --sidebar-bg-accent: #878788;
+  --sidebar-text: #adadad;
+  --sidebar-muted: #dfdfdf;
+  --sidebar-active: #5c5c5c;
+  --sidebar-hover: rgba(146, 146, 146, 0.05);
+}
 
 .task-dialog-panel .mat-dialog-container {
   border-radius: 8px;

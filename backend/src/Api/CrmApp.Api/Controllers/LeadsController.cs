@@ -81,7 +81,7 @@ namespace CrmApp.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<LeadDto>> UpdateLead(
             int id,
-            [FromBody] LeadCreateDto updateDto,
+            [FromBody] LeadUpdateDto updateDto,
             CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
@@ -93,6 +93,7 @@ namespace CrmApp.Api.Controllers
 
             return Ok(lead);
         }
+
 
         // DELETE: api/leads/{id}
         [HttpDelete("{id:int}")]
